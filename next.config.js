@@ -6,9 +6,9 @@ const nextConfig = {
 
 // module.exports = withVideos()
 module.exports = nextConfig
-module.exports = {
-    images: {
-        loader: "akamai",
-        path: "",
-    },
-}
+// module.exports = {
+//     images: {
+//         loader: "akamai",
+//         path: "",
+//     },
+// }
