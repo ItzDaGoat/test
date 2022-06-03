@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { MdOutlineTask } from "react-icons/Md"
+import { MdOutlineTask } from "react-icons/md"
 import { FaMedal, FaRegGem } from "react-icons/fa"
 import { RiMoneyDollarCircleLine } from "react-icons/ri"
 import nfts from "../public/nfts.png"
