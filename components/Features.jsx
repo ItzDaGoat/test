@@ -4,22 +4,23 @@ import { FaMedal, FaRegGem } from "react-icons/fa"
 import { RiMoneyDollarCircleLine } from "react-icons/ri"
 import nfts from "../public/nfts.png"
 import task from "../public/task.jpg"
+import Link from "next/link"
 
 const text = {
     id: 1,
     name_0: "WHAT IS A SOVEREIGN INDIVIDUAL？",
-    name_1: "什么样的人可以称之为主权个人？",
+    name_1: "什么样的人适合这里？",
     name_2: "什麼樣的人可以稱之為主權個人？",
     description1_0:
         "those who can educate themselves and believe they can do anything,because the greatest source of wealth will be the ideas in your head rather than physical capital",
     description1_1:
-        "那些不断实现自我迭代与成长并且不给自己设限的人。在这个时代，最大的财富来自于你的智慧",
+        "那些已经在web2生活多年，但依然对web3充满兴趣的人。那些已经听了很多web3，但想动手做点web3的人。那些在这个时代能善用搜索引擎、视频平台，从而可以快速掌握各种web3技能的人。",
     description1_2:
         "那些不斷實現自我迭代與成長並且不給自己設限的人。在這個時代，最大的財富來自於你的智慧",
     description2_0:
         "adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in, accusamus quisquam.Lorem ipsum dolor sit amet consectetur adipisicing elit",
     description2_1:
-        "设计、艺术、程序、市场，所有任务的目的只有一个，就是为NFT赋能一共有四种类型：设计、艺术、程序、市场，所有任务的目的只有一个，就是为NFT赋能一共有四种类型：设计、艺术、程序、市场，所有任务的目的只有一个，就是为NFT赋能",
+        "这里提供一种更加直接的入场方式，通过任务引导学习路线，通过查询链上数据进行任务验证并颁发奖章。每一个奖章，都将跟随你的钱包永久记录在区块链上。",
     description2_2:
         "設計、藝術、程序、市場，所有任務的目的只有一個，就是為NFT賦能一共有四種類型：設計、藝術、程序、市場，所有任務的目的只有一個，就是為NFT賦能一共有四種類型：設計、藝術、程序、市場，所有任務的目的只有一個，就是為NFT賦能",
     creatTogether_0:
@@ -114,6 +115,64 @@ export const Features = () => {
                     </p>
                 </div>
             </div>
+
+            <div className="flex  justify-around ">
+                <div className="card w-96  bg-gray-700   shadow-xl">
+                    <figure>
+                        <img src="https://api.lorem.space/image/shoes?w=400&h=225" alt="Shoes" />
+                    </figure>
+                    <div className="card-body">
+                        <h2 className="card-title text-white">
+                            安装小狐狸钱包
+                            <div className="badge badge-secondary">DONE</div>
+                        </h2>
+                        <p className="text-white">
+                            迈出进入web3的第一步——获取你的钱包地址。它将是你在web3的身份证，你可以通过它登陆几乎所有的web3应用
+                        </p>
+                        <div className="mt-10 card-actions justify-end">
+                            <button className="btn border-2 border-white w-20">详情</button>
+                            <button className="btn border-2 border-white w-20">完成</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="card w-96  bg-gray-700   shadow-xl">
+                    <figure>
+                        <img src="https://api.lorem.space/image/shoes?w=400&h=225" alt="Shoes" />
+                    </figure>
+                    <div className="card-body">
+                        <h2 className="card-title text-white">
+                            获取testnet ETH
+                            {/* <div className="badge badge-secondary">NEW</div> */}
+                        </h2>
+                        <p className="text-white">
+                            以太坊测试链不但拥有主链几乎全部的功能，并且test
+                            ETH免费就能获取，这样你可以通过完全免费的方式体验web3
+                        </p>
+                        <div className="mt-10 card-actions justify-end">
+                            <button className="btn border-2 border-white w-20">详情</button>
+                            <button className="btn border-2 border-white w-20">完成</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="card w-96  bg-gray-700   shadow-xl">
+                    <figure>
+                        <img src="https://api.lorem.space/image/shoes?w=400&h=225" alt="Shoes" />
+                    </figure>
+                    <div className="card-body">
+                        <h2 className="card-title text-white">
+                            在测试网创造你的第一个NFT
+                            {/* <div className="badge badge-secondary">NEW</div> */}
+                        </h2>
+                        <p className="text-white">
+                            迈出第一步，获取你的账号地址，它将是你在web3的身份证
+                        </p>
+                        <div className="mt-10 card-actions justify-end">
+                            <button className="btn border-2 border-white w-20">详情</button>
+                            <button className="btn border-2 border-white w-20">完成</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {/***mint **/}
             <div className="mt-10 mb-24 max-w-7xl  h-48 mx-auto flex justify-around items-center  shadow-xl bg-yellow-400">
                 <div className=" w-[30%] font-bold italic text-4xl  text-center ">
@@ -137,7 +196,7 @@ export const Features = () => {
                             id="creat"
                             className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl"
                         >
-                            EMPOWER TOGETHER
+                            实操提升认知
                         </h2>
                         <p className="mt-3 text-lg text-white ">
                             {text["creatTogether_" + language]}
@@ -164,6 +223,10 @@ export const Features = () => {
                                 </div>
                             ))}
                         </dl>
+
+                        <Link href="/task">
+                            <button className="btn btn-active btn-primary">Button</button>
+                        </Link>
                     </div>
 
                     <Image
@@ -180,7 +243,7 @@ export const Features = () => {
                                 id="earn"
                                 className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl"
                             >
-                                EARN TOGETHER
+                                区块链记录成就
                             </h3>
                             <p className="mt-3 text-lg bg-clip-text text-white   ">
                                 {text["earnTogether_" + language]}
