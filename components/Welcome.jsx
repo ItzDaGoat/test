@@ -2,7 +2,7 @@ import { Link } from "react-scroll"
 
 export const Welcome = () => {
     return (
-        <div className=" relative h-screen  pt-12  bg-gradient-to-b from-black via-black   to-[#160823] ">
+        <div className=" relative h-screen  pt-12">
             <main className=" relative  h-[40rem]  mx-auto max-w-7xl   px-4   ">
                 <video autoPlay loop muted className="absolute top-0 right-10 h-[38rem] w-[38rem]">
                     <source src="/5M.mp4" type="video/mp4" />
@@ -28,7 +28,7 @@ export const Welcome = () => {
                             href="#"
                             className=" mx-2 px-4 py-4  text-lg font-medium rounded-md text-white bg-purple-600 hover:bg-purple-400 "
                         >
-                            实操提升认知
+                            使用web3
                         </Link>
                         <Link
                             to="earn"
@@ -40,6 +40,17 @@ export const Welcome = () => {
                             className=" mx-2 px-4 py-4 text-lg font-medium rounded-md text-white bg-purple-600 hover:bg-purple-400 "
                         >
                             区块链记录成就
+                        </Link>
+                        <Link
+                            to="earn"
+                            spy={true}
+                            smooth={true}
+                            offset={-120}
+                            duration={700}
+                            href="#"
+                            className=" mx-2 px-4 py-4 text-lg font-medium rounded-md text-white bg-purple-600 hover:bg-purple-400 "
+                        >
+                            找到做事小伙伴
                         </Link>
                     </div>
                 </div>
