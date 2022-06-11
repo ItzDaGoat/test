@@ -2,7 +2,8 @@ import Image from "next/image"
 import { MdOutlineTask } from "react-icons/md"
 import { FaMedal, FaRegGem } from "react-icons/fa"
 import { RiMoneyDollarCircleLine } from "react-icons/ri"
-import { GiTorch } from "react-icons/gi"
+
+import React from "react"
 
 import nfts from "../public/nfts.png"
 import torch from "../public/torch.png"
@@ -98,6 +99,7 @@ const gemRoyalty = [
 export const Features = () => {
     const language = 1
     const style = { "--value": 70 }
+
     return (
         <div className="relative  pt-8 mx-auto  max-w-7xl">
             {/* 任务系统 */}
@@ -105,7 +107,7 @@ export const Features = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="lg:text-center">
                         <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
-                            进入web3，从使用开始
+                            了解web3，从使用开始
                         </p>
                         <p className="mt-4 max-w-2xl text-lg text-gray-300 lg:mx-auto">
                             这里提供一种更加直接的入场方式，通过任务引导学习路线，通过查询链上数据进行任务验证并颁发奖章。每一个奖章，都将跟随你的钱包永久记录在区块链上。

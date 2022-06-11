@@ -1,10 +1,6 @@
 import Head from "next/head"
-import Image from "next/image"
-import styles from "../styles/Home.module.css"
-import Navbar from "../components/Navbar"
-import Welcome from "../components/Welcome"
-import Features from "../components/Features"
-// import { TransactionContext } from "../components/TransactionContext"
+
+import { Navbar, Features, Welcome } from "../components"
 
 export default function Home() {
     return (

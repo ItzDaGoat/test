@@ -16,6 +16,9 @@ export const Navbar = () => {
                         <div>Twitter</div>
                         <div>Discord</div>
                     </div>
+                    <Link href="/test">
+                        <a className="mx-10  text-white">debug</a>
+                    </Link>
                 </div>
                 <ConnectButton moralisAuth={false} />
             </nav>

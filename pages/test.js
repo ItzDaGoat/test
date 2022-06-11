@@ -1,12 +1,10 @@
-import { Navbar, Tasks, Debug } from "../components"
-import styles from "../styles/Home.module.css"
+import { Navbar, Debug } from "../components"
 
 function Task() {
     return (
         <div>
             <Navbar />
             <Debug />
-            <Tasks />
         </div>
     )
 }
