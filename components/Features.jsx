@@ -7,7 +7,10 @@ import React from "react"
 
 import nfts from "../public/nfts.png"
 import torch from "../public/torch.png"
-
+import DAO from "../public/DAO.png"
+import NFT from "../public/nft.png"
+import DEFI from "../public/defi.png"
+import EXPLORE from "../public/explore.png"
 import Link from "next/link"
 
 const text = {
@@ -117,11 +120,8 @@ export const Features = () => {
                     <div className="mt-10">
                         <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
-                                <figure>
-                                    <img
-                                        src="https://api.lorem.space/image/movie?w=200&h=280"
-                                        alt="Movie"
-                                    />
+                                <figure className=" w-[22rem]">
+                                    <Image className=" " src={NFT} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
                                     <div className=" absolute top-7 right-9 text-white text-lg flex items-center">
@@ -148,11 +148,8 @@ export const Features = () => {
                                 </div>
                             </div>
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
-                                <figure>
-                                    <img
-                                        src="https://api.lorem.space/image/movie?w=200&h=280"
-                                        alt="Movie"
-                                    />
+                                <figure className=" w-[22rem]">
+                                    <Image className=" " src={DEFI} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
                                     <div className=" absolute top-7 right-9 text-white text-lg flex items-center">
@@ -183,11 +180,8 @@ export const Features = () => {
                                 </div>
                             </div>
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
-                                <figure>
-                                    <img
-                                        src="https://api.lorem.space/image/movie?w=200&h=280"
-                                        alt="Movie"
-                                    />
+                                <figure className=" w-[22rem]">
+                                    <Image className=" " src={DAO} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
                                     <div className=" absolute top-7 right-9 text-white text-lg flex items-center">
@@ -217,11 +211,8 @@ export const Features = () => {
                             </div>
 
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
-                                <figure>
-                                    <img
-                                        src="https://api.lorem.space/image/movie?w=200&h=280"
-                                        alt="Movie"
-                                    />
+                                <figure className=" w-[22rem]">
+                                    <Image className=" " src={EXPLORE} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
                                     <div className=" absolute top-7 right-9 text-white text-lg flex items-center">
