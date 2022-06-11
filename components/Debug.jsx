@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react"
 // import "./App.css"
 import { useMoralis, useNewMoralisObject, useMoralisQuery } from "react-moralis"
+import badgesABI from "../abis/badges.json"
+import Web3 from "web3" // Only when using npm/yarn
+
+// Enable web3 and get the initialized web3 instance from Web3.js
 
 function Debug() {
     const {
@@ -153,20 +157,16 @@ function Debug() {
     }
 
     const getName = async () => {
-        const web3Provider = await Moralis.enableWeb3()
-        const ethers = Moralis.web3Library
+        // const web3Provider = await Moralis.enableWeb3()
+        // const ethers = Moralis.web3Library
+        // const web3Js = new Web3(Moralis.provider)
+        await Moralis.enableWeb3()
+        const web3Js = new Web3(Moralis.provider)
 
-        const daiAddress = "dai.tokens.ethers.eth"
-        const daiAbi = [
-            "function name() view returns (string)",
-            "function symbol() view returns (string)",
-            "function balanceOf(address) view returns (uint)",
-            "function transfer(address to, uint amount)",
-            "event Transfer(address indexed from, address indexed to, uint amount)",
-        ]
-        const daiContract = new ethers.Contract(daiAddress, daiAbi, web3Provider)
+        const daiAddress = "0x7EdeBd1b40ef03e628F7094D29e95fA3bc616817"
+        const daiContract = new web3Js.eth.Contract(badgesABI, daiAddress)
 
-        const name = await daiContract.name()
+        const name = await daiContract.methods.owner().call()
         console.log(name)
     }
 

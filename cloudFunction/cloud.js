@@ -63,7 +63,7 @@ Moralis.Cloud.define("cloudTask1", async (request) => {
     }
 
     if (task0Step == 2) {
-        if (NFTBalance >= 3) {
+        if (NFTBalance >= 1) {
             results[0].set("task0Step", 3)
             results[0].save()
             return "task0Step set to 3"

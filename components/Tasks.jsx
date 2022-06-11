@@ -3,6 +3,8 @@ import Image from "next/image"
 import torch from "../public/torch.png"
 import { useState, useEffect } from "react"
 import { useMoralisWeb3Api, useMoralis } from "react-moralis"
+import badgesABI from "../abis/badges.json"
+import Web3 from "web3" // Only when using npm/yarn
 
 const task1Steps = ["安装metamask", "获取测试ETH", "创造一个NFT", "领取奖励"]
 // Get a (ethers.js) web3Provider
@@ -37,7 +39,7 @@ export default function Tasks() {
         isWeb3Enabled,
     } = useMoralis()
     const [activeStep, setActiveStep] = useState(0)
-    const [minted, setMinted] = useState(false)
+    const [BTNLoading, setBTNLoading] = useState(false)
 
     useEffect(() => {
         // if (isAuthenticated) {
@@ -82,23 +84,36 @@ export default function Tasks() {
         //如果已经存在信息，则更新steps
         if (results.length >= 1) {
             setActiveStep(results[0].attributes.task0Step)
-            setMinted(results[0].attributes.task0Minted)
-            console.log(results[0].attributes.task0Minted)
-            console.log({ minted })
         } else {
             setActiveStep(0)
-            setMinted(false)
         }
         return results
+    }
+
+    const setStepsto100 = async () => {
+        const TaskStatus = Moralis.Object.extend("TaskStatus")
+        const taskStatus = new TaskStatus()
+        const query = new Moralis.Query(TaskStatus)
+        query.equalTo("userAccount", account)
+        const results = await query.find()
+        results[0].set("task0Step", 100)
+        results[0].save()
+        setActiveStep(results[0].attributes.task0Step)
+        return "task0Step set to 100"
     }
 
     const cloudParams = { account: account }
     const cloudFunction = async () => {
         const result = await Moralis.Cloud.run("cloudTask1", cloudParams)
-        console.log({ result })
+        console.log(result.messageHash)
+        console.log(result.signature)
+        if (activeStep >= 3) {
+            await badgesMint(result.messageHash, result.signature)
+        }
     }
 
     const handleNext = async () => {
+        setBTNLoading(true)
         if (typeof window !== "undefined") {
             const { ethereum } = window // 安装了 metamask后  window就有个ethereum的对象
             if (!ethereum) return window.alert("你还没有安装web3钱包，请安装metamask") // browser code
@@ -108,17 +123,10 @@ export default function Tasks() {
             await accountQuery()
             return
         }
-        // await new Promise((resolve) => setTimeout(resolve, 500)) //等待0.3秒
+
         await cloudFunction()
         await accountQuery()
-
-        // const balance = await fetchNativeBalance()
-        // const nft = await fetchNFTsForContract()
-        // if (nft.total > 0) {
-        //     setActiveStep(3)
-        // } else if (balance.balance > 0.1 * 10 * 18) {
-        //     setActiveStep(2)
-        // }
+        setBTNLoading(false)
     }
 
     /* moralis start */
@@ -142,7 +150,36 @@ export default function Tasks() {
     }
     /*  moralis end */
 
-    // 'Dai Stablecoin'
+    /* NFTmint start*/
+    const badgesMint = async (_hash, _signature) => {
+        setBTNLoading(true)
+        await Moralis.enableWeb3()
+        const web3Js = new Web3(Moralis.provider)
+
+        const address = "0x707e584aA8e127aC54f758e1A1593e5d3B1cDB34"
+        const Contract = new web3Js.eth.Contract(badgesABI, address)
+        // const name = await Contract.methods.torchMint(_hash, _signature).call()
+
+        try {
+            const txHash = await Contract.methods
+                .torchMint(_hash, _signature)
+                .send({ from: account })
+                .on("transactionHash", function (hash) {
+                    console.log(hash)
+                })
+                .on("receipt", function (receipt) {
+                    console.log("SUCCESS!!!")
+                    alert("MINT SUCCESS!!!")
+                    setStepsto100()
+                    setBTNLoading(false)
+                })
+        } catch (error) {
+            setBTNLoading(false)
+            console.log("error!!!!!")
+            console.error(error)
+        }
+    }
+    /* NFTmint end*/
 
     //conditional render
     let stepButton
@@ -154,19 +191,13 @@ export default function Tasks() {
         )
     } else if (activeStep >= 3) {
         stepButton = (
-            <button
-                onClick={handleNext}
-                className="  h-10  px-5 text-2xl font-medium rounded-md text-yellow-400 bg-gray-700 hover:bg-gray-600 "
-            >
+            <button disabled={BTNLoading} onClick={handleNext} className=" btn ">
                 Mint
             </button>
         )
     } else {
         stepButton = (
-            <button
-                onClick={handleNext}
-                className="  h-10  px-5 text-2xl font-medium rounded-md text-yellow-400 bg-gray-700 hover:bg-gray-600 "
-            >
+            <button disabled={BTNLoading} onClick={handleNext} className="btn ">
                 完成
             </button>
         )
