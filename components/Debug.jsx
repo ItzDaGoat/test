@@ -47,7 +47,8 @@ function Debug() {
     }
 
     const getAccount = async () => {
-        console.log(account)
+        console.log({ account })
+        console.log({ user })
     }
     const getChainId = async () => {
         console.log(chainId)
@@ -100,7 +101,7 @@ function Debug() {
         const query = new Moralis.Query(TaskStatus)
         query.equalTo("userAccount", account)
         const results = await query.find()
-        console.log("Successfully retrieved " + results.length + " monsters.")
+        console.log("debug Successfully retrieved " + results.length + " userinfo.")
         return results
     }
     /** Retrieve Objects end */
@@ -147,7 +148,7 @@ function Debug() {
         results[0].destroy().then(
             (myObject) => {
                 // The object was deleted from the Moralis Cloud.
-                console.log("del 1")
+                console.log("Successfully delete 1 ")
             },
             (error) => {
                 // The delete failed.

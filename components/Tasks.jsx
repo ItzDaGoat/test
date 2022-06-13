@@ -1,6 +1,6 @@
 import { GrShare } from "react-icons/gr"
 import Image from "next/image"
-import torch from "../public/torch.png"
+import torch from "../public/badge1.png"
 import { useState, useEffect } from "react"
 import { useMoralisWeb3Api, useMoralis } from "react-moralis"
 import badgesABI from "../abis/badges.json"
@@ -26,6 +26,7 @@ const task1 = {
 }
 
 export default function Tasks() {
+    const BadgesAddress = "0x2f973f35887ceF7D52B849924f43C6FEAe32DD57"
     const {
         Moralis,
         isInitialized,
@@ -49,6 +50,7 @@ export default function Tasks() {
         //     update()
         // }
         console.log({ account })
+        console.log("page fresh")
 
         if (isInitialized) {
             const update = async () => {
@@ -71,6 +73,7 @@ export default function Tasks() {
             taskStatus.set("task0Step", 0)
             taskStatus.set("task0CanMint", false)
             taskStatus.set("task0Minted", false)
+            // setActiveStep(1) //同步更新任务第一步
 
             taskStatus.save().then(
                 (result) => {
@@ -105,10 +108,9 @@ export default function Tasks() {
     const cloudParams = { account: account }
     const cloudFunction = async () => {
         const result = await Moralis.Cloud.run("cloudTask1", cloudParams)
-        console.log(result.messageHash)
-        console.log(result.signature)
         if (activeStep >= 3) {
-            await badgesMint(result.messageHash, result.signature)
+            console.log("signature:" + result.signature)
+            await badgesMint(result.signature)
         }
     }
 
@@ -117,10 +119,14 @@ export default function Tasks() {
         if (typeof window !== "undefined") {
             const { ethereum } = window // 安装了 metamask后  window就有个ethereum的对象
             if (!ethereum) return window.alert("你还没有安装web3钱包，请安装metamask") // browser code
+            setBTNLoading(false)
         }
         if (!isAuthenticated) {
             await authenticate()
+            // isAuthenticated ? await accountQuery() : console.log("noAuthenticated")
+            // console.log(123)
             await accountQuery()
+            setBTNLoading(false)
             return
         }
 
@@ -140,10 +146,10 @@ export default function Tasks() {
         const balance = await Web3Api.account.getNativeBalance(options)
         return balance
     }
-    const fetchNFTsForContract = async () => {
+    const fetchBadges = async () => {
         const options = {
             chain: "rinkeby",
-            token_address: "0x905746B174cFe0bD771Db220aF29Fb19f8Ae2432",
+            token_address: BadgesAddress,
         }
         const NFTs = await Web3Api.account.getNFTsForContract(options)
         return NFTs
@@ -151,18 +157,17 @@ export default function Tasks() {
     /*  moralis end */
 
     /* NFTmint start*/
-    const badgesMint = async (_hash, _signature) => {
+    const badgesMint = async (_signature) => {
         setBTNLoading(true)
         await Moralis.enableWeb3()
         const web3Js = new Web3(Moralis.provider)
 
-        const address = "0x707e584aA8e127aC54f758e1A1593e5d3B1cDB34"
-        const Contract = new web3Js.eth.Contract(badgesABI, address)
+        const Contract = new web3Js.eth.Contract(badgesABI, BadgesAddress)
         // const name = await Contract.methods.torchMint(_hash, _signature).call()
 
         try {
             const txHash = await Contract.methods
-                .torchMint(_hash, _signature)
+                .mint(1, _signature)
                 .send({ from: account })
                 .on("transactionHash", function (hash) {
                     console.log(hash)
@@ -193,6 +198,12 @@ export default function Tasks() {
         stepButton = (
             <button disabled={BTNLoading} onClick={handleNext} className=" btn ">
                 Mint
+            </button>
+        )
+    } else if (!isAuthenticated) {
+        stepButton = (
+            <button disabled={BTNLoading} onClick={handleNext} className=" btn ">
+                开始
             </button>
         )
     } else {

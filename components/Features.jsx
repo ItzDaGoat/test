@@ -2,8 +2,9 @@ import Image from "next/image"
 import { MdOutlineTask } from "react-icons/md"
 import { FaMedal, FaRegGem } from "react-icons/fa"
 import { RiMoneyDollarCircleLine } from "react-icons/ri"
+import { TransactionContext } from "./MainProvider"
 
-import React from "react"
+import React, { useEffect, useState, useContext } from "react"
 
 import nfts from "../public/nfts.png"
 import torch from "../public/torch.png"
@@ -12,6 +13,7 @@ import NFT from "../public/nft.png"
 import DEFI from "../public/defi.png"
 import EXPLORE from "../public/explore.png"
 import Link from "next/link"
+import Badges from "../public/reputation.png"
 
 const text = {
     id: 1,
@@ -101,7 +103,61 @@ const gemRoyalty = [
 
 export const Features = () => {
     const language = 1
-    const style = { "--value": 70 }
+    // const BadgesAddress = "0x2f973f35887ceF7D52B849924f43C6FEAe32DD57"
+    // const Web3Api = useMoralisWeb3Api()
+    const [badgesNUM, setBadgesNUM] = useState(0)
+    const {
+        isInitialized,
+        authenticate,
+        isAuthenticated,
+        isAuthenticating,
+        account,
+        user,
+        BadgesAddress,
+        Web3Api,
+    } = useContext(TransactionContext)
+
+    // const {
+    //     Moralis,
+    //     isInitialized,
+    //     authenticate,
+    //     isAuthenticated,
+    //     isAuthenticating,
+    //     user,
+    //     account,
+    //     chainId,
+    //     logout,
+    //     isWeb3Enabled,
+    // } = useMoralis()
+
+    useEffect(() => {
+        // authenticate()
+        console.log("page fresh")
+        console.log("authenticated: ", isAuthenticated)
+        console.log("user: ", user)
+        console.log("account: ", account)
+        // if (account) {
+        //     authenticate()
+        // }
+        if (isInitialized) {
+            fetchBadges()
+        }
+    }, [
+        /* isAuthenticated */
+        account,
+    ])
+
+    const fetchBadges = async () => {
+        const options = {
+            address: account,
+            chain: "rinkeby",
+            token_address: BadgesAddress,
+        }
+        let { total } = await Web3Api.account.getNFTsForContract(options)
+        setBadgesNUM(total)
+        console.log(await Web3Api.account.getNFTsForContract(options))
+        console.log("badgesNUM:" + total)
+    }
 
     return (
         <div className="relative  pt-8 mx-auto  max-w-7xl">
@@ -120,7 +176,7 @@ export const Features = () => {
                     <div className="mt-10">
                         <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
-                                <figure className=" w-[22rem]">
+                                <figure className=" w-[16rem]">
                                     <Image className=" " src={NFT} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
@@ -130,7 +186,7 @@ export const Features = () => {
                                             className="h-5 w-5 "
                                             aria-hidden="true"
                                         />
-                                        0/2
+                                        {badgesNUM}/1
                                     </div>
 
                                     <h2 className="  text-3xl text-white">NFTs</h2>
@@ -148,7 +204,7 @@ export const Features = () => {
                                 </div>
                             </div>
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
-                                <figure className=" w-[22rem]">
+                                <figure className=" w-[16rem]">
                                     <Image className=" " src={DEFI} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
@@ -180,7 +236,7 @@ export const Features = () => {
                                 </div>
                             </div>
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
-                                <figure className=" w-[22rem]">
+                                <figure className=" w-[16rem]">
                                     <Image className=" " src={DAO} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
@@ -211,7 +267,7 @@ export const Features = () => {
                             </div>
 
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
-                                <figure className=" w-[22rem]">
+                                <figure className=" w-[16rem]">
                                     <Image className=" " src={EXPLORE} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
@@ -248,10 +304,10 @@ export const Features = () => {
                 </div>
             </div>
             {/* 勋章系统 */}
-            <div className="relative  pt-20  max-w-7xl mx-auto ">
+            <div className="relative  pt-10 my-20 max-w-7xl mx-auto ">
                 <div className="relative    ">
                     <div className="relative flex  flex-row-reverse  justify-between  ">
-                        <div className="mr-10 w-5/12">
+                        <div className="mt-5 mr-10 w-5/12">
                             <h3
                                 id="earn"
                                 className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl"
@@ -286,19 +342,63 @@ export const Features = () => {
                             </dl>
                         </div>
 
-                        <div className=" ml-36 mt-2  overflow-hidden  rounded-3xl   relative  ">
-                            <video className="w-[28rem]" autoPlay loop muted>
+                        <div className=" mt-2  overflow-hidden  rounded-3xl   relative  ">
+                            {/* <video className="w-[28rem]" autoPlay loop muted>
                                 <source src="/earn.mp4" type="video/mp4" />
-                            </video>
+                            </video> */}
+                            <figure className=" w-[38rem] ml-4">
+                                <Image className="  " src={Badges} alt="" />
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* MINT */}
+
+            <div className=" relative  mt-52 mb-24 py-5   max-w-7xl h-48 mx-auto  shadow-xl bg-yellow-400">
+                <div className=" flex justify-around items-center">
+                    <div className="w-[40%] font-bold italic text-4xl  text-center">
+                        传递火炬，人点亮人
+                    </div>
+
+                    <div className="w-[43%] leading-loose text-lg  text-left ">
+                        <p>
+                            # 每个钱包第一次获得<b className=" text-2xl">火炬</b>
+                            时, 可以同时得到一个<b className=" text-2xl">NFT头像</b>
+                        </p>
+                        <p>
+                            # 收到的火炬可以再<b className=" text-2xl">传递</b>给他人
+                        </p>
+                        <p># 直到产生的NFT头像总数达到10000，活动结束</p>
+                        <p>
+                            # 头像NFT只通过传火产生，且传火活动结束前都
+                            <b className=" text-2xl">不可交易</b>
+                        </p>
+                    </div>
+                    <div className="w-[20%] text-3xl ">
+                        <div className="h-28 w-28 mx-auto">
+                            <Image className="  scale-[100%]" src={torch} alt="" />
+                        </div>
+
+                        <div className=" mt-2 flex px-6 justify-around">
+                            <button className="h-10  px-5 text-2xl font-medium rounded-md text-yellow-400 bg-gray-700 hover:bg-gray-600 ">
+                                Mint
+                            </button>
+                            <button className="h-10  px-5 text-2xl font-medium rounded-md text-yellow-400 bg-gray-700 hover:bg-gray-600 ">
+                                传火
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             {/* 社区 */}
-            <div className="relative mt-28  pt-10 border-t  border-gray-500    h-[34rem]">
-                <Image className=" -translate-x-[30%]  scale-[60%]" src={nfts} alt="" />
 
-                <div className="absolute w-5/12 top-48 right-16 text-left">
+            <div className="relative   flex justify-between    h-[34rem]">
+                {/* <Image className=" -translate-x-[30%]  scale-[60%]" src={nfts} alt="" /> */}
+                <figure className=" w-[50rem]">
+                    <Image className=" " src={nfts} alt="" />
+                </figure>
+                <div className="  ml-8 w-5/12   text-left">
                     <h2 className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl">
                         {text["name_" + language]}
                     </h2>
@@ -308,34 +408,6 @@ export const Features = () => {
                     <p className="mt-10 max-w-3xl mx-auto  text-xl text-white">
                         {text["description2_" + language]}
                     </p>
-                </div>
-            </div>
-
-            {/* 火炬mint */}
-            <div className=" mt-16 mb-24 max-w-7xl  h-48 mx-auto flex justify-around items-center  shadow-xl bg-yellow-400">
-                <div className=" w-[40%] font-bold italic text-4xl  text-center ">
-                    传递火炬，人点亮人
-                </div>
-                <div className="w-[43%] p  text-base  text-left ">
-                    <p># 完成任务可以freeMINT火炬一个,一共500个</p>
-                    <p># 每个钱包第一次获得火炬时可以自动获得一个头像NFT </p>
-                    <p># 获得的火炬可以再传递给他人，如此循环，产生出更多的头像</p>
-                    <p># 直到头像NFT总数达到10000时，传火活动结束 </p>
-                    <p># 在传火活动结束前，头像NFT都不可交易</p>
-                </div>
-                <div className="w-[20%] text-3xl ">
-                    <div className="h-28 w-28 mx-auto">
-                        <Image className="  scale-[100%]" src={torch} alt="" />
-                    </div>
-
-                    <div className=" mt-2 flex px-6 justify-around">
-                        <button className="h-10  px-5 text-2xl font-medium rounded-md text-yellow-400 bg-gray-700 hover:bg-gray-600 ">
-                            Mint
-                        </button>
-                        <button className="h-10  px-5 text-2xl font-medium rounded-md text-yellow-400 bg-gray-700 hover:bg-gray-600 ">
-                            传火
-                        </button>
-                    </div>
                 </div>
             </div>
 

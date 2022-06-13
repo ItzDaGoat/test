@@ -79,6 +79,7 @@ Moralis.Cloud.define("cloudTask1", async (request) => {
             url: "http://43.142.113.28:1100/sign",
             body: {
                 account: request.params.account,
+                taskId: "1",
             },
         }).then(
             function (httpResponse) {
