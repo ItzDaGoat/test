@@ -22,7 +22,7 @@ export const Welcome = () => {
 
                     <div className=" my-40">
                         <Link
-                            to="creat"
+                            to="task"
                             spy={true}
                             smooth={true}
                             offset={-120}
@@ -44,7 +44,7 @@ export const Welcome = () => {
                             获得链上成就
                         </Link>
                         <Link
-                            to="earn"
+                            to="communicate"
                             spy={true}
                             smooth={true}
                             offset={-120}

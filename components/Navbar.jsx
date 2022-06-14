@@ -20,7 +20,7 @@ export const Navbar = () => {
                         <a className="mx-10  text-white">debug</a>
                     </Link>
                 </div>
-                <ConnectButton moralisAuth={false} />
+                <ConnectButton moralisAuth={false} chainId={4} />
             </nav>
         </div>
     )

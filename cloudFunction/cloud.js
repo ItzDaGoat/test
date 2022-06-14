@@ -29,10 +29,11 @@ Moralis.Cloud.define("cloudTask1", async (request) => {
 
     // const signer = new ethers.Wallet(privateKey) //创建签名钱包
 
-    const abi = Moralis.Web3.abis.erc721
-    const address = "0x905746B174cFe0bD771Db220aF29Fb19f8Ae2432"
+    const abi = Moralis.Web3.abis.erc1155
+    const address = "0xa2dBBc63101CD5Ac2A4c4ed26cAA997B2918f9E9"
     const contract = new web3.eth.Contract(abi, address)
-    const NFTBalance = await contract.methods.balanceOf(request.params.account).call()
+    const NFTBalance = await contract.methods.balanceOf(request.params.account, 0).call()
+    logger.info("NFTBalance" + NFTBalance)
 
     const TaskStatus = Moralis.Object.extend("TaskStatus")
     // const taskStatus = new TaskStatus()
@@ -101,7 +102,7 @@ Moralis.Cloud.define("cloudTask1", async (request) => {
 Moralis.Cloud.define("getNFTs", async (request) => {
     const web3 = Moralis.web3ByChain("0x4") // BSC
     const abi = Moralis.Web3.abis.erc721
-    const address = "0x905746B174cFe0bD771Db220aF29Fb19f8Ae2432"
+    const address = "0xa2dBBc63101CD5Ac2A4c4ed26cAA997B2918f9E9"
 
     // create contract instance
     const contract = new web3.eth.Contract(abi, address)

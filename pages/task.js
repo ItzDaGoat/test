@@ -5,7 +5,7 @@ function Task() {
     return (
         <div>
             <Navbar />
-            <Debug />
+            {/* <Debug /> */}
             <Tasks />
         </div>
     )

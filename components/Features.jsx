@@ -118,6 +118,8 @@ export const Features = () => {
         BadgesAddress,
         Web3Api,
         Web3,
+        web3Js,
+        dispatch,
     } = useContext(TransactionContext)
 
     // const {
@@ -163,10 +165,17 @@ export const Features = () => {
     }
     const torchMint = async () => {
         setBTNLoading(true)
-        const web3Js = new Web3(Moralis.provider)
+
         const Contract = new web3Js.eth.Contract(fireABI, FireAddress)
         const cloudParams = { account: account }
         const _signature = await Moralis.Cloud.run("getTorchSignature", cloudParams)
+        dispatch({
+            type: "info",
+            message: "验证勋章，获取签名中",
+            title: "New Notification",
+            icon: "bell",
+            position: "bottomR",
+        })
         console.log(_signature)
         try {
             const txHash = await Contract.methods
@@ -174,15 +183,32 @@ export const Features = () => {
                 .send({ from: account })
                 .on("transactionHash", function (hash) {
                     console.log(hash)
+                    dispatch({
+                        type: "info",
+                        message: hash,
+                        title: "交易提交，请稍后",
+                        position: "bottomR",
+                    })
                 })
                 .on("receipt", function (receipt) {
                     console.log("SUCCESS!!!")
-                    alert("MINT SUCCESS!!!")
+                    dispatch({
+                        type: "success",
+                        message: "MINT成功！",
+                        title: "New Notification",
+                        position: "bottomR",
+                    })
                     setBTNLoading(false)
                 })
         } catch (error) {
             setBTNLoading(false)
             console.log("error!!!!!")
+            dispatch({
+                type: "error",
+                message: "",
+                title: "MINT失败",
+                position: "bottomR",
+            })
             console.error(error)
         }
     }
@@ -193,7 +219,10 @@ export const Features = () => {
             <div className="py-20  ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="lg:text-center">
-                        <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                        <p
+                            id="task"
+                            className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl"
+                        >
                             了解web3，从使用开始
                         </p>
                         <p className="mt-4 max-w-2xl text-lg text-gray-300 lg:mx-auto">
@@ -389,10 +418,10 @@ export const Features = () => {
                         传递火炬，人点亮人
                     </div>
 
-                    <div className="w-[43%]  leading-10 text-lg  text-left ">
+                    <div id="communicate" className="w-[43%]  leading-10 text-lg  text-left ">
                         <p>
                             # 将<b className=" text-2xl">火炬</b>
-                            传递给他人，自己获得一个
+                            传递给他人，同时自己可以获得一个
                             <b className=" text-2xl">NFT头像</b>
                         </p>
                         <p>
@@ -431,7 +460,7 @@ export const Features = () => {
             </div>
             {/* 社区 */}
 
-            <div className="relative   flex justify-between    h-[34rem]">
+            <div id="communicate" className="relative   flex justify-between    h-[34rem]">
                 {/* <Image className=" -translate-x-[30%]  scale-[60%]" src={nfts} alt="" /> */}
                 <figure className=" w-[50rem]">
                     <Image className=" " src={nfts} alt="" />

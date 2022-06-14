@@ -1,12 +1,15 @@
 import { GrShare } from "react-icons/gr"
 import Image from "next/image"
-import torch from "../public/badge1.png"
-import { useState, useEffect } from "react"
-import { useMoralisWeb3Api, useMoralis } from "react-moralis"
+import badge1 from "../public/badge1.png"
+import { useState, useEffect, useContext } from "react"
+import { TransactionContext } from "./MainProvider"
+import Link from "next/link"
+
 import badgesABI from "../abis/badges.json"
 import Web3 from "web3" // Only when using npm/yarn
 
-const task1Steps = ["安装metamask", "获取测试ETH", "创造一个NFT", "领取奖励"]
+const task1Steps = ["安装metamask", "获取testETH", "用testETH购买NFT", "获得奖励"]
+const task2Steps = ["获得火炬", "将火炬传递给他人", "获得奖励"]
 // Get a (ethers.js) web3Provider
 
 const task1 = {
@@ -26,21 +29,28 @@ const task1 = {
 }
 
 export default function Tasks() {
-    const BadgesAddress = "0x2f973f35887ceF7D52B849924f43C6FEAe32DD57"
     const {
+        Task1testNFTAddress,
+        FireAddress,
         Moralis,
         isInitialized,
         authenticate,
         isAuthenticated,
         isAuthenticating,
-        user,
         account,
-        chainId,
-        logout,
+        user,
+        BadgesAddress,
+        Web3Api,
+        Web3,
+        web3Js,
         isWeb3Enabled,
-    } = useMoralis()
-    const [activeStep, setActiveStep] = useState(0)
+        dispatch,
+    } = useContext(TransactionContext)
+
+    const [Task1activeStep, setActiveStep] = useState(0)
     const [BTNLoading, setBTNLoading] = useState(false)
+    const [task1testNFT, setTask1testNFT] = useState(0)
+    const [balance, setBalance] = useState(0)
 
     useEffect(() => {
         // if (isAuthenticated) {
@@ -55,6 +65,10 @@ export default function Tasks() {
         if (isInitialized) {
             const update = async () => {
                 await accountQuery()
+                if (account && isWeb3Enabled) {
+                    await fetchTask1NFT()
+                    await fetchNativeBalance()
+                }
             }
             update()
         }
@@ -107,8 +121,15 @@ export default function Tasks() {
 
     const cloudParams = { account: account }
     const cloudFunction = async () => {
+        dispatch({
+            type: "info",
+            message: "数据验证中，请稍后",
+            title: "New Notification",
+            icon: "bell",
+            position: "bottomR",
+        })
         const result = await Moralis.Cloud.run("cloudTask1", cloudParams)
-        if (activeStep >= 3) {
+        if (Task1activeStep >= 3) {
             console.log("signature:" + result.signature)
             await badgesMint(result.signature)
         }
@@ -116,6 +137,7 @@ export default function Tasks() {
 
     const handleNext = async () => {
         setBTNLoading(true)
+
         if (typeof window !== "undefined") {
             const { ethereum } = window // 安装了 metamask后  window就有个ethereum的对象
             if (!ethereum) return window.alert("你还没有安装web3钱包，请安装metamask") // browser code
@@ -137,22 +159,28 @@ export default function Tasks() {
 
     /* moralis start */
 
-    const Web3Api = useMoralisWeb3Api()
-
     const fetchNativeBalance = async () => {
         const options = {
             chain: "rinkeby",
         }
         const balance = await Web3Api.account.getNativeBalance(options)
+        setBalance((balance.balance / 10 ** 18).toFixed(2))
+        console.log((balance.balance / 10 ** 18).toFixed(2))
         return balance
     }
-    const fetchBadges = async () => {
-        const options = {
-            chain: "rinkeby",
-            token_address: BadgesAddress,
-        }
-        const NFTs = await Web3Api.account.getNFTsForContract(options)
-        return NFTs
+    const fetchTask1NFT = async () => {
+        const abi = badgesABI
+        const address = Task1testNFTAddress
+        const contract = new web3Js.eth.Contract(abi, address)
+        const NFTBalance = await contract.methods.balanceOf(account, 0).call()
+        setTask1testNFT(NFTBalance)
+        console.log("NFTnum" + NFTBalance)
+        // const options = {
+        //     chain: "rinkeby",
+        //     token_address: "0xa2dBBc63101CD5Ac2A4c4ed26cAA997B2918f9E9",
+        // }
+        // const NFTNum = await Web3Api.account.getNFTsForContract(options)
+        return NFTBalance
     }
     /*  moralis end */
 
@@ -171,9 +199,21 @@ export default function Tasks() {
                 .send({ from: account })
                 .on("transactionHash", function (hash) {
                     console.log(hash)
+                    dispatch({
+                        type: "info",
+                        message: hash,
+                        title: "交易提交，请稍后",
+                        position: "bottomR",
+                    })
                 })
                 .on("receipt", function (receipt) {
                     console.log("SUCCESS!!!")
+                    dispatch({
+                        type: "success",
+                        message: "MINT成功！",
+                        title: "New Notification",
+                        position: "bottomR",
+                    })
                     alert("MINT SUCCESS!!!")
                     setStepsto100()
                     setBTNLoading(false)
@@ -181,6 +221,12 @@ export default function Tasks() {
         } catch (error) {
             setBTNLoading(false)
             console.log("error!!!!!")
+            dispatch({
+                type: "error",
+                message: "",
+                title: "MINT失败",
+                position: "bottomR",
+            })
             console.error(error)
         }
     }
@@ -188,44 +234,203 @@ export default function Tasks() {
 
     //conditional render
     let stepButton
-    if (activeStep >= 100) {
+    if (Task1activeStep >= 100) {
         stepButton = (
             <p className="  h-10  px-5 text-2xl font-medium rounded-md text-yellow-400  ">
                 已获得
             </p>
         )
-    } else if (activeStep >= 3) {
+    } else if (Task1activeStep >= 3) {
         stepButton = (
-            <button disabled={BTNLoading} onClick={handleNext} className=" btn ">
+            <button
+                disabled={BTNLoading}
+                onClick={handleNext}
+                className="btn  px-5 text-lg btn-primary"
+            >
                 Mint
             </button>
         )
     } else if (!isAuthenticated) {
         stepButton = (
-            <button disabled={BTNLoading} onClick={handleNext} className=" btn ">
+            <button
+                disabled={BTNLoading}
+                onClick={handleNext}
+                className="btn  px-5 text-lg btn-primary"
+            >
                 开始
             </button>
         )
     } else {
         stepButton = (
-            <button disabled={BTNLoading} onClick={handleNext} className="btn ">
+            <button
+                disabled={BTNLoading}
+                onClick={handleNext}
+                className="btn  px-5 text-lg btn-primary"
+            >
                 完成
             </button>
         )
     }
+    let task1des
+    if (Task1activeStep >= 100) {
+        task1des = (
+            <>
+                <p className="text-base mt-5 ">
+                    测试链是web3中必不可少的工具，它不但拥有主链几乎所有的功能，而且token免费就能获取，最适合初学者体验web3。(已完成)
+                </p>
+            </>
+        )
+    } else if (Task1activeStep >= 3) {
+        task1des = (
+            <>
+                <p className="text-base mt-5 ">
+                    <b> Step4：</b>
+                    恭喜完成任务，可以mint属于你的勋章了。（注：勋章是你经历的见证，不可交易）
+                </p>
+            </>
+        )
+    } else if (Task1activeStep >= 2) {
+        task1des = (
+            <>
+                <p className="text-base mt-5 ">
+                    <b> Step3：</b>
+                    OpenSea是目前全球最大的综合NFT交易平台，用户可以在平台上铸造、展示、交易、拍卖NFT。请使用刚刚获得的testETH在{" "}
+                    <a
+                        className=" font-bold   text-blue-800"
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://testnets.opensea.io/"
+                    >
+                        Opensea TestNet
+                    </a>
+                    上购买一个测试NFT
+                </p>
+                <p className=" mt-5">
+                    <b> 完成条件：</b> 在rinkeby链上拥有一个地址为
+                    <a
+                        className=" font-bold   text-blue-800"
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://blog.csdn.net/weixin_43886457/article/details/122591191"
+                    >
+                        0xa2dBBc63101CD5Ac2A4c4ed26cAA997B2918f9E9
+                    </a>
+                    的NFT <b>（{task1testNFT}/1）</b>
+                </p>
+            </>
+        )
+    } else if (Task1activeStep >= 1) {
+        task1des = (
+            <>
+                <p className="text-base mt-5 ">
+                    <b> Step2：</b>
+                    水龙头(faucet)是一种分发免费代币的方式，您可以这里免费获取testETH。请先切换您钱包的网络至Rinkeby测试网
+                    <a
+                        className=" font-bold   text-blue-800"
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://blog.csdn.net/weixin_43886457/article/details/122591191"
+                    >
+                        帮助{" "}
+                        <GrShare
+                            style={{ color: "white" }}
+                            className=" inline-block   h-3 w-3 "
+                            aria-hidden="true"
+                        />
+                    </a>
+                    ，然后在&quot;水龙头&quot;领取testETH
+                    <a
+                        className=" font-bold   text-blue-800"
+                        target="_blank"
+                        rel="noreferrer"
+                        href="https://faucets.chain.link/rinkeby"
+                    >
+                        帮助{" "}
+                        <GrShare
+                            style={{ color: "white" }}
+                            className=" inline-block   h-3 w-3 "
+                            aria-hidden="true"
+                        />
+                    </a>
+                    。
+                </p>
+                <p className=" mt-5">
+                    <b> 完成条件：</b>Rinkeby链上的余额 &gt;= 0.05 ETH。
+                    <b>({balance}/0.05)</b>
+                </p>
+            </>
+        )
+    } else {
+        task1des = (
+            <p className="text-base mt-5 ">
+                <b> Step1：</b>
+                一切先从安装metamask开始。它是一个在虚拟世界的钱包，相当于你在web3的身份证，是web3一切行为的必须品。也正因为其LOGO是只可爱的小狐狸，也被大家称为“小狐狸钱包”。{" "}
+                <a
+                    className="  font-bold   text-blue-800"
+                    href="https://www.bilibili.com/read/cv15454623/"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    View Guide
+                    <GrShare
+                        style={{ color: "white" }}
+                        className="ml-2 inline-block mx-2 h-4 w-4 "
+                        aria-hidden="true"
+                    />
+                </a>
+            </p>
+        )
+    }
 
     return (
-        <div className="relative py-20 h-screen">
-            <div className="mx-auto mt-9 bg-white h-72 flex rounded-lg shadow-lg overflow-hidden max-w-7xl ">
+        <div className="relative mx-auto py-20 max-w-7xl h-screen">
+            <Link href="/">
+                <button className="btn mt-9">Back</button>
+            </Link>
+            <div className=" mt-3 bg-white h-72 flex rounded-lg shadow-lg overflow-hidden  ">
                 <div className=" relative  flex-1     px-6 py-8 p-12">
                     <h3 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
-                        在测试网MINT你的第一个NFT
+                        在测试网获得你的第一个NFT
+                    </h3>
+                    {/* <p className=" mt-3 text-gray-500">
+                        测试链是web3中必不可少的工具，它不但拥有主链几乎所有的功能，而且token免费就能获取，最适合初学者体验web3。
+                    </p> */}
+                    {task1des}
+
+                    <ul className=" absolute bottom-3 left-5   w-11/12 steps">
+                        {task1Steps.map((label, index) => {
+                            const stepProps = {}
+                            const labelProps = {}
+                            if (Task1activeStep >= index) {
+                                return (
+                                    <li key={index} className="step step-primary">
+                                        {label}
+                                    </li>
+                                )
+                            }
+                            return (
+                                <li key={index} className="step  ">
+                                    {label}
+                                </li>
+                            )
+                        })}
+                    </ul>
+                </div>
+                <div className=" w-80 bg-gray-700 py-16">
+                    <div className="h-35 w-32 mx-auto">
+                        <Image src={badge1} alt="" />
+                    </div>
+
+                    <div className=" mt-2 flex px-6 justify-around">{stepButton}</div>
+                </div>
+            </div>
+            {/* <div className="mx-auto mt-9 bg-white h-72 flex rounded-lg shadow-lg overflow-hidden max-w-7xl ">
+                <div className=" relative  flex-1     px-6 py-8 p-12">
+                    <h3 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
+                        传递火炬，转移NFT
                     </h3>
                     <p className=" mt-6 text-base text-gray-500">
-                        以太坊测试链不但拥有主链几乎全部的功能，并且test
-                        ETH免费就能获取，这样你可以通过完全免费的方式体验web3.
-                        以太坊测试链不但拥有主链几乎全部的功能，并且test
-                        ETH免费就能获取，这样你可以通过完全免费的方式体验web3
+                        发发发发发顺丰
                         <button className="text-lg flex px-0 btn btn-link">
                             View Guide
                             <GrShare
@@ -236,11 +441,11 @@ export default function Tasks() {
                         </button>
                     </p>
 
-                    <ul className=" absolute bottom-3 left-5   w-11/12 steps">
-                        {task1Steps.map((label, index) => {
+                    <ul className=" absolute bottom-3 left-5     w-11/12 steps">
+                        {task2Steps.map((label, index) => {
                             const stepProps = {}
                             const labelProps = {}
-                            if (activeStep >= index) {
+                            if (Task1activeStep >= index) {
                                 return (
                                     <li key={index} className="step step-primary">
                                         {label}
@@ -262,7 +467,7 @@ export default function Tasks() {
 
                     <div className=" mt-2 flex px-6 justify-around">{stepButton}</div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
