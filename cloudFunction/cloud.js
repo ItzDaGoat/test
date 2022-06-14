@@ -110,3 +110,28 @@ Moralis.Cloud.define("getNFTs", async (request) => {
 
     return name
 })
+
+Moralis.Cloud.define("getTorchSignature", async (request) => {
+    let results
+
+    hashSignature = Moralis.Cloud.httpRequest({
+        method: "POST",
+        url: "http://43.142.113.28:1100/sign",
+        body: {
+            account: request.params.account,
+            taskId: "0",
+        },
+    }).then(
+        function (httpResponse) {
+            logger.info({ httpResponse })
+            results = httpResponse.data
+            logger.info("results:" + results.signature)
+            return results.signature
+        },
+        function (httpResponse) {
+            logger.error("Request failed with response code " + httpResponse.status)
+        }
+    )
+
+    return hashSignature
+})
