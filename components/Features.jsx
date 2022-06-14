@@ -3,6 +3,7 @@ import { MdOutlineTask } from "react-icons/md"
 import { FaMedal, FaRegGem } from "react-icons/fa"
 import { RiMoneyDollarCircleLine } from "react-icons/ri"
 import { TransactionContext } from "./MainProvider"
+import fireABI from "../abis/fire.json"
 
 import React, { useEffect, useState, useContext } from "react"
 
@@ -103,10 +104,11 @@ const gemRoyalty = [
 
 export const Features = () => {
     const language = 1
-    // const BadgesAddress = "0x2f973f35887ceF7D52B849924f43C6FEAe32DD57"
-    // const Web3Api = useMoralisWeb3Api()
+    const [BTNLoading, setBTNLoading] = useState(false)
     const [badgesNUM, setBadgesNUM] = useState(0)
     const {
+        FireAddress,
+        Moralis,
         isInitialized,
         authenticate,
         isAuthenticated,
@@ -115,6 +117,7 @@ export const Features = () => {
         user,
         BadgesAddress,
         Web3Api,
+        Web3,
     } = useContext(TransactionContext)
 
     // const {
@@ -157,6 +160,31 @@ export const Features = () => {
         setBadgesNUM(total)
         console.log(await Web3Api.account.getNFTsForContract(options))
         console.log("badgesNUM:" + total)
+    }
+    const torchMint = async () => {
+        setBTNLoading(true)
+        const web3Js = new Web3(Moralis.provider)
+        const Contract = new web3Js.eth.Contract(fireABI, FireAddress)
+        const cloudParams = { account: account }
+        const _signature = await Moralis.Cloud.run("getTorchSignature", cloudParams)
+        console.log(_signature)
+        try {
+            const txHash = await Contract.methods
+                .mint(0, _signature)
+                .send({ from: account })
+                .on("transactionHash", function (hash) {
+                    console.log(hash)
+                })
+                .on("receipt", function (receipt) {
+                    console.log("SUCCESS!!!")
+                    alert("MINT SUCCESS!!!")
+                    setBTNLoading(false)
+                })
+        } catch (error) {
+            setBTNLoading(false)
+            console.log("error!!!!!")
+            console.error(error)
+        }
     }
 
     return (
@@ -355,25 +383,22 @@ export const Features = () => {
             </div>
             {/* MINT */}
 
-            <div className=" relative  mt-52 mb-24 py-5   max-w-7xl h-48 mx-auto  shadow-xl bg-yellow-400">
+            <div className=" relative  mt-52 mb-24 py-5   max-w-7xl h-52 mx-auto  shadow-xl bg-yellow-400">
                 <div className=" flex justify-around items-center">
                     <div className="w-[40%] font-bold italic text-4xl  text-center">
                         传递火炬，人点亮人
                     </div>
 
-                    <div className="w-[43%] leading-loose text-lg  text-left ">
+                    <div className="w-[43%]  leading-10 text-lg  text-left ">
                         <p>
-                            # 每个钱包第一次获得<b className=" text-2xl">火炬</b>
-                            时, 可以同时得到一个<b className=" text-2xl">NFT头像</b>
+                            # 将<b className=" text-2xl">火炬</b>
+                            传递给他人，自己获得一个
+                            <b className=" text-2xl">NFT头像</b>
                         </p>
                         <p>
                             # 收到的火炬可以再<b className=" text-2xl">传递</b>给他人
                         </p>
-                        <p># 直到产生的NFT头像总数达到10000，活动结束</p>
-                        <p>
-                            # 头像NFT只通过传火产生，且传火活动结束前都
-                            <b className=" text-2xl">不可交易</b>
-                        </p>
+                        <p># 头像总数共10000个，达到上限后活动结束</p>
                     </div>
                     <div className="w-[20%] text-3xl ">
                         <div className="h-28 w-28 mx-auto">
@@ -381,12 +406,25 @@ export const Features = () => {
                         </div>
 
                         <div className=" mt-2 flex px-6 justify-around">
-                            <button className="h-10  px-5 text-2xl font-medium rounded-md text-yellow-400 bg-gray-700 hover:bg-gray-600 ">
-                                Mint
-                            </button>
-                            <button className="h-10  px-5 text-2xl font-medium rounded-md text-yellow-400 bg-gray-700 hover:bg-gray-600 ">
-                                传火
-                            </button>
+                            {badgesNUM >= 1 ? (
+                                <button
+                                    disabled={BTNLoading}
+                                    onClick={torchMint}
+                                    className="btn text-lg "
+                                >
+                                    Mint
+                                </button>
+                            ) : (
+                                <button className="h-10  px-3 text-base btn-disabled flex items-center font-medium rounded-md text-white bg-gray-500   ">
+                                    1
+                                    <FaMedal
+                                        style={{ color: "white" }}
+                                        className="h-4 w-4 "
+                                        aria-hidden="true"
+                                    />
+                                    解锁
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
