@@ -1,3 +1,4 @@
+import { TransactionContext } from "./MainProvider"
 import { Link } from "react-scroll"
 
 export const Welcome = () => {
