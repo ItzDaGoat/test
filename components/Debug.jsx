@@ -183,7 +183,7 @@ function Debug() {
             type: "info",
             message: "hash",
             title: "交易提交，请稍后",
-            position: "bottomR",
+            position: "bottomL",
         })
     }
 
