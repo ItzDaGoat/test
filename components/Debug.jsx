@@ -181,7 +181,7 @@ function Debug() {
     const getNotification = () => {
         dispatch({
             type: "info",
-            message: "hash",
+            message: "bottomL",
             title: "交易提交，请稍后",
             position: "bottomL",
         })

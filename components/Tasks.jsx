@@ -145,8 +145,6 @@ export default function Tasks() {
         }
         if (!isAuthenticated) {
             await authenticate()
-            // isAuthenticated ? await accountQuery() : console.log("noAuthenticated")
-            // console.log(123)
             await accountQuery()
             setBTNLoading(false)
             return
@@ -175,11 +173,6 @@ export default function Tasks() {
         const NFTBalance = await contract.methods.balanceOf(account, 0).call()
         setTask1testNFT(NFTBalance)
         console.log("NFTnum" + NFTBalance)
-        // const options = {
-        //     chain: "rinkeby",
-        //     token_address: "0xa2dBBc63101CD5Ac2A4c4ed26cAA997B2918f9E9",
-        // }
-        // const NFTNum = await Web3Api.account.getNFTsForContract(options)
         return NFTBalance
     }
     /*  moralis end */
