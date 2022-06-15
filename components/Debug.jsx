@@ -1,24 +1,31 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { TransactionContext } from "./MainProvider"
+
 // import "./App.css"
-import { useMoralis, useNewMoralisObject, useMoralisQuery } from "react-moralis"
+
 import badgesABI from "../abis/badges.json"
-import Web3 from "web3" // Only when using npm/yarn
 
 // Enable web3 and get the initialized web3 instance from Web3.js
 
 function Debug() {
     const {
+        Task1testNFTAddress,
+        FireAddress,
         Moralis,
         isInitialized,
         authenticate,
         isAuthenticated,
         isAuthenticating,
-        user,
         account,
-        chainId,
-        logout,
+        user,
+        BadgesAddress,
+        Web3Api,
+        Web3,
+        web3Js,
         isWeb3Enabled,
-    } = useMoralis()
+        dispatch,
+        debugmune,
+    } = useContext(TransactionContext)
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -171,56 +178,72 @@ function Debug() {
         console.log(name)
     }
 
+    const getNotification = () => {
+        dispatch({
+            type: "info",
+            message: "hash",
+            title: "交易提交，请稍后",
+            position: "bottomR",
+        })
+    }
+
     /** delete end */
 
     return (
-        <div className="bg-white mt-20">
-            <button className="btn my-1 mx-2" onClick={login}>
-                Moralis Metamask Login
-            </button>
-            <button className="btn my-1 mx-2" onClick={logOut} disabled={isAuthenticating}>
-                Logout
-            </button>
-            <button className="btn my-1 mx-2" onClick={getAccount}>
-                getAccount
-            </button>
-            <button className="btn my-1 mx-2" onClick={getChainId}>
-                getChainId
-            </button>
-            <button className="btn my-1 mx-2" onClick={getisAuthenticated}>
-                isAuthenticated
-            </button>{" "}
-            <button className="btn my-1 mx-2" onClick={() => console.log(isInitialized)}>
-                isInitialized
-            </button>
-            <button className="btn my-1 mx-2" onClick={authenticate}>
-                authenticate
-            </button>
-            <button className="btn my-1 mx-2" onClick={() => console.log(isWeb3Enabled)}>
-                isWeb3Enabled
-            </button>
-            <button className="btn my-1 mx-2" onClick={cloudLog}>
-                CloudFunction
-            </button>{" "}
-            <button className="btn my-1 mx-2" onClick={saveObject}>
-                DB-newObject
-            </button>{" "}
-            <button className="btn my-1 mx-2" onClick={accountQuery}>
-                DB-getObject
-            </button>
-            <button className="btn my-1 mx-2" onClick={increseObjet}>
-                DB-plusOne
-            </button>
-            <button className="btn my-1 mx-2" onClick={mintedObjet}>
-                DB-mintedObjet
-            </button>
-            <button className="btn my-1 mx-2" onClick={deleObjet}>
-                DB-delerow
-            </button>
-            <button className="btn my-1 mx-2" onClick={getName}>
-                contractName
-            </button>
-        </div>
+        <>
+            {debugmune && (
+                <div className="bg-white mt-20">
+                    <button className="btn my-1 mx-2" onClick={login}>
+                        Moralis Metamask Login
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={logOut} disabled={isAuthenticating}>
+                        Logout
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={getAccount}>
+                        getAccount
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={getChainId}>
+                        getChainId
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={getisAuthenticated}>
+                        isAuthenticated
+                    </button>{" "}
+                    <button className="btn my-1 mx-2" onClick={() => console.log(isInitialized)}>
+                        isInitialized
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={authenticate}>
+                        authenticate
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={() => console.log(isWeb3Enabled)}>
+                        isWeb3Enabled
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={cloudLog}>
+                        CloudFunction
+                    </button>{" "}
+                    <button className="btn my-1 mx-2" onClick={saveObject}>
+                        DB-newObject
+                    </button>{" "}
+                    <button className="btn my-1 mx-2" onClick={accountQuery}>
+                        DB-getObject
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={increseObjet}>
+                        DB-plusOne
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={mintedObjet}>
+                        DB-mintedObjet
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={deleObjet}>
+                        DB-delerow
+                    </button>
+                    <button className="btn my-1 mx-2" onClick={getName}>
+                        contractName
+                    </button>{" "}
+                    <button className="btn my-1 mx-2" onClick={getNotification}>
+                        Notify
+                    </button>
+                </div>
+            )}
+        </>
     )
 }
 

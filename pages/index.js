@@ -1,6 +1,6 @@
 import Head from "next/head"
 
-import { Navbar, Features, Welcome } from "../components"
+import { Navbar, Features, Welcome, Debug } from "../components"
 
 export default function Home() {
     return (
@@ -12,6 +12,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Navbar />
+            <Debug />
             <Welcome />
             <Features />
             {/* </TransactionContext> */}

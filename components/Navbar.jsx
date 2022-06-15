@@ -1,7 +1,10 @@
 import { ConnectButton } from "web3uikit"
 import Link from "next/link"
+import { TransactionContext } from "./MainProvider"
+import React, { useContext } from "react"
 
 export const Navbar = () => {
+    const { debugmune, setDebugMune } = useContext(TransactionContext)
     return (
         <div className="fixed top-0 left-0 h-16  w-screen  z-50  bg-black  ">
             <nav className=" max-w-8xl mx-auto px-20  z-50   flex   justify-between items-center ">
@@ -16,9 +19,16 @@ export const Navbar = () => {
                         <div>Twitter</div>
                         <div>Discord</div>
                     </div>
-                    <Link href="/test">
-                        <a className="mx-10  text-white">debug</a>
-                    </Link>
+
+                    <button
+                        onClick={() => {
+                            setDebugMune(!debugmune)
+                            console.log(debugmune)
+                        }}
+                        className="mx-10  text-white"
+                    >
+                        debug
+                    </button>
                 </div>
                 <ConnectButton moralisAuth={false} chainId={4} />
             </nav>

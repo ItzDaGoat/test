@@ -24,6 +24,7 @@ export const MainProvider = ({ children }) => {
     const Web3Api = useMoralisWeb3Api()
     const web3Js = new Web3(Moralis.provider)
     const dispatch = useNotification()
+    const [debugmune, setDebugMune] = useState(false)
 
     return (
         <TransactionContext.Provider
@@ -45,6 +46,8 @@ export const MainProvider = ({ children }) => {
                 Web3,
                 web3Js,
                 dispatch,
+                debugmune,
+                setDebugMune,
             }}
         >
             {children}
