@@ -199,6 +199,7 @@ export default function Tasks() {
 
     const fetchNativeBalance = async () => {
         const options = {
+            address: account,
             chain: "rinkeby",
         }
         const balance = await Web3Api.account.getNativeBalance(options)

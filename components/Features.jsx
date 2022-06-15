@@ -23,8 +23,7 @@ const text = {
     name_2: "什麼樣的人可以稱之為主權個人？",
     description1_0:
         "those who can educate themselves and believe they can do anything,because the greatest source of wealth will be the ideas in your head rather than physical capital",
-    description1_1:
-        "那些已经在web2生活多年，但依然对web3充满兴趣的人。那些已经听了很多web3，但想动手做点web3的人。那些在这个时代能善用搜索引擎、视频平台，从而可以快速掌握各种web3技能的人。",
+    description1_1: "进入web3，从动手开始",
     description1_2:
         "那些不斷實現自我迭代與成長並且不給自己設限的人。在這個時代，最大的財富來自於你的智慧",
     description2_0:
@@ -42,7 +41,7 @@ const text = {
     earnTogether_0:
         "As the gems on the NFT are light up one by one, it will make the NFT more precious, and more importantly, it allows you to get part of the royalty of this NFT",
     earnTogether_1:
-        "在这里，所有成长的点滴都会得到记录，我们有一套完整激励体系（声望-勋章）记录个体的成长，同时还有开放的命题充分挖掘出优秀的个体，赠与NFT邀请您成为我们来来的游戏共建伙伴",
+        "一套链上的勋章系统将记录每个人的成长与技能。这不仅让你的经历得到见证，更可以降低彼此信任的门槛，让合作更易发生",
     earnTogether_2: "隨著NFT上寶石被逐個點亮，這不僅使得NFT更加珍貴和特別，還能讓你收穫永久的版稅",
     mintDes_0: "We have 5000 Sovereign Individuals. Mint one to join us",
     mintDes_1: "总共有5000个Sovereign Individuals NFT，快来加入我们吧",
@@ -82,10 +81,12 @@ const gemRoyalty = [
         name_0: "GEM",
         name_1: "灵魂绑定，不可交易",
         name_2: "寶石",
-        description_0:
-            "Every NFT is studded with sleeping gems, and only reputation can light them up",
-        description_1: "可交易的NFT可以值很多钱，而不可交易的NFT则可以有更多的价值。",
-        description_2: "每個NFT上都鑲嵌著沉睡的寶石，完成任務獲得聲望可以點亮它們",
+        description_0: "可交易的NFT会变成钱，而不可交易的NFT会带来合作",
+        description_1:
+            "这个世界的财富有两种，第一种是钱，第二种是人类的生产力。可交易的NFT能变成第一种，而不可交易的NFT则能促成第二种",
+        description_2:
+            "这个世界上比钱更贵重的财富是人类的生产力。可交易的NFT能变成第一种，而不可交易的NFT则能促成第二种",
+
         icon: FaRegGem,
     },
     {
@@ -96,7 +97,7 @@ const gemRoyalty = [
 
         description_0:
             "A protection of the intellectual  property rights of each sovereign individual. After lighting up the gems, each transaction of NFT will bring you benefits, the more gems you light up, the higher the royalty rate you will get",
-        description_1: "任何人、应用都可以拉取到你的勋章，让信任不再变的遥不可及",
+        description_1: "让web3，信任不再稀缺",
         description_2: "點亮寶石後，NFT的每次交易都將為你帶來收益，點亮的寶石越多，獲得的版稅越",
         icon: RiMoneyDollarCircleLine,
     },
@@ -226,7 +227,7 @@ export const Features = () => {
                             了解web3，从使用开始
                         </p>
                         <p className="mt-4 max-w-2xl text-lg text-gray-300 lg:mx-auto">
-                            这里提供一种更加直接的入场方式，通过任务引导学习路线，通过查询链上数据进行任务验证并颁发奖章。每一个奖章，都将跟随你的钱包永久记录在区块链上。
+                            这里提供一种更加直接的入场方式，通过任务引导学习路线，通过验证链上数据颁发勋章。每一个任务都是一段通往web3的奇妙旅程
                         </p>
                     </div>
 
@@ -243,13 +244,13 @@ export const Features = () => {
                                             className="h-5 w-5 "
                                             aria-hidden="true"
                                         />
-                                        {badgesNUM}/1
+                                        {badgesNUM}/2
                                     </div>
 
                                     <h2 className="  text-3xl text-white">NFTs</h2>
 
                                     <p className="text-white">
-                                        迈入Web3的第一步，从最基础的钱包安装，到NFT的铸造、购买、出售。通过以太坊测试代币完全免费的体验NFT
+                                        迈入Web3的第一步，先从免费获得一个NFT开始。
                                     </p>
                                     <Link href="/task">
                                         <div className="card-actions justify-end">
@@ -271,13 +272,13 @@ export const Features = () => {
                                             className="h-5 w-5 "
                                             aria-hidden="true"
                                         />
-                                        0/4
+                                        0/6
                                     </div>
 
                                     <h2 className="  text-3xl text-white">DeFi</h2>
 
                                     <p className="text-white">
-                                        迈入Web3的第一步，从最基础的钱包安装，到NFT的铸造、购买、出售。通过以太坊测试代币完全免费的体验NFT
+                                        区块链的本质是将钱记录在链上，而DEFI就是区块链里关于钱的那一部分
                                     </p>
                                     <div className="card-actions justify-end">
                                         <button className="btn btn-primary w-24 px-0  btn-disabled bg-gray-500 text-white text-base  ">
@@ -303,7 +304,7 @@ export const Features = () => {
                                             className="h-5 w-5 "
                                             aria-hidden="true"
                                         />
-                                        0/6
+                                        0/5
                                     </div>
 
                                     <h2 className="  text-3xl text-white">DAO</h2>
@@ -340,8 +341,8 @@ export const Features = () => {
                                     <h2 className="  text-3xl text-white">EXPOLRER</h2>
 
                                     <p className="text-white">
-                                        GAME-FI, SOCIAL-FI,
-                                        在这里通往各式各样有趣的项目，从此web3的大门向你敞开
+                                        GAMEFI, SOCIALFI,
+                                        各式各样有趣的项目都在这里，原来web3已经在这么玩
                                     </p>
                                     <div className="card-actions justify-end">
                                         <button className="btn btn-primary w-24 px-0 btn-disabled bg-gray-500 text-white text-base  ">
@@ -414,20 +415,21 @@ export const Features = () => {
 
             <div className=" relative  mt-52 mb-24 py-5   max-w-7xl h-52 mx-auto  shadow-xl bg-yellow-400">
                 <div className=" flex justify-around items-center">
-                    <div className="w-[40%] font-bold italic text-4xl  text-center">
+                    <div className="w-[35%] font-bold italic text-4xl  text-center">
                         传递火炬，人点亮人
                     </div>
 
-                    <div id="communicate" className="w-[43%]  leading-10 text-lg  text-left ">
+                    <div id="communicate" className="w-[44%]  leading-10 text-lg  text-left ">
                         <p>
-                            # 将<b className=" text-2xl">火炬</b>
-                            传递给他人，同时自己获得一个
-                            <b className=" text-2xl">NFT头像</b>
+                            # 每个钱包第一次将<b className=" text-2xl">火炬</b>
+                            传递给他人，自己会收到一个
+                            <b className=" text-2xl">专属头像</b>
                         </p>
                         <p>
-                            # 收到的火炬可以再<b className=" text-2xl">传递</b>给他人
+                            # 收到火炬的人可以再将火炬<b className=" text-2xl">传递</b>
+                            给他人，同样也会收到专属头像
                         </p>
-                        <p># 头像总数共10000个，达到上限后活动结束</p>
+                        <p># 直到头像总数达到10000个，活动永久结束</p>
                     </div>
                     <div className="w-[20%] text-3xl ">
                         <div className="h-28 w-28 mx-auto">
@@ -467,14 +469,16 @@ export const Features = () => {
                 </figure>
                 <div className="  ml-8 w-5/12   text-left">
                     <h2 className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl">
-                        {text["name_" + language]}
+                        找到一起做事的伙伴
                     </h2>
                     <p className="mt-10 max-w-3xl mx-auto  text-xl text-white">
-                        {text["description1_" + language]}
+                        进入web3，从动手开始
                     </p>
                     <p className="mt-10 max-w-3xl mx-auto  text-xl text-white">
-                        {text["description2_" + language]}
+                        这里聚集了一群想在web3动手做点什么的人，每个人都拥有自己擅长的技能和领域，并对自己负责。web3全新的组织形式让我们彼此链接在一起。
+                        加入社区，你的伙伴就在这里
                     </p>
+                    <p className="mt-10 max-w-3xl mx-auto  text-xl text-white"></p>
                 </div>
             </div>
 
