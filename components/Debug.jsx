@@ -182,7 +182,7 @@ function Debug() {
         dispatch({
             type: "info",
             message: "bottomL",
-            title: "交易提交，请稍后",
+            title: "0.72",
             position: "bottomL",
         })
     }

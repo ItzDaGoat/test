@@ -6981,7 +6981,7 @@ __metadata:
     react-scroll: ^1.8.7
     tailwindcss: ^3.0.24
     web3: ^1.7.3
-    web3uikit: ^0.1.155
+    web3uikit: ^0.1.160
   languageName: unknown
   linkType: soft
 
@@ -9817,9 +9817,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web3uikit@npm:^0.1.155":
-  version: 0.1.155
-  resolution: "web3uikit@npm:0.1.155"
+"web3uikit@npm:^0.1.160":
+  version: 0.1.160
+  resolution: "web3uikit@npm:0.1.160"
   dependencies:
     "@storybook/theming": ^6.4.21
     "@walletconnect/web3-provider": ^1.7.1
@@ -9833,7 +9833,7 @@ __metadata:
   peerDependencies:
     react: 18
     react-dom: 18
-  checksum: b5d3e6a07fd01068aaa32cc2cb6a7b66c0b7b6e4baa0ba37c86d09fdeb55f3ad793502c32b97887622118334a0b5574f5722291bf63815af5af88e79e351476b
+  checksum: cae06240384820638a7efb1bc36a7a53993bc4bcba0189b674c00e9a90278d524bf6ee089075c427fec402211ef7d184baf60387fbd392cb8c2928aadd7f1582
   languageName: node
   linkType: hard
 
