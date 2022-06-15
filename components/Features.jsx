@@ -421,7 +421,7 @@ export const Features = () => {
                     <div id="communicate" className="w-[43%]  leading-10 text-lg  text-left ">
                         <p>
                             # 将<b className=" text-2xl">火炬</b>
-                            传递给他人，同时自己可以获得一个
+                            传递给他人，同时自己获得一个
                             <b className=" text-2xl">NFT头像</b>
                         </p>
                         <p>

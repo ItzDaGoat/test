@@ -22,6 +22,18 @@ Moralis.Cloud.define("sign", async (request) => {
 
     return results
 })
+Moralis.Cloud.define("skipStep", async (request) => {
+    const TaskStatus = Moralis.Object.extend("TaskStatus")
+    const query = new Moralis.Query(TaskStatus)
+    query.equalTo("userAccount", request.params.account)
+    const results = await query.find()
+    if (results.length != 1) {
+        return "failed"
+    }
+    results[0].set("task0Step", request.params.stepid)
+    results[0].save()
+    return "success"
+})
 
 Moralis.Cloud.define("cloudTask1", async (request) => {
     const web3 = Moralis.web3ByChain("0x4")
@@ -42,7 +54,7 @@ Moralis.Cloud.define("cloudTask1", async (request) => {
     const results = await query.find()
 
     if (results.length != 1) {
-        return "no user"
+        return "failed"
     }
 
     const { userAccount, task0Step } = results[0].attributes
@@ -50,16 +62,16 @@ Moralis.Cloud.define("cloudTask1", async (request) => {
     if (task0Step == 0) {
         results[0].set("task0Step", 1)
         results[0].save()
-        return "task0Step set to 1"
+        return "success"
     }
 
     if (task0Step == 1) {
         if (balance >= 50000000000000000) {
             results[0].set("task0Step", 2)
             results[0].save()
-            return "task0Step set to 2"
+            return "success"
         } else {
-            return "task2 uncomplete"
+            return "failed"
         }
     }
 
@@ -67,9 +79,9 @@ Moralis.Cloud.define("cloudTask1", async (request) => {
         if (NFTBalance >= 1) {
             results[0].set("task0Step", 3)
             results[0].save()
-            return "task0Step set to 3"
+            return "success"
         }
-        return "task3 uncomplete"
+        return "failed"
     }
 
     if (task0Step == 3) {

@@ -4,9 +4,7 @@ import badge1 from "../public/badge1.png"
 import { useState, useEffect, useContext } from "react"
 import { TransactionContext } from "./MainProvider"
 import Link from "next/link"
-
 import badgesABI from "../abis/badges.json"
-import Web3 from "web3" // Only when using npm/yarn
 
 const task1Steps = ["安装metamask", "获取testETH", "用testETH购买NFT", "获得奖励"]
 const task2Steps = ["获得火炬", "将火炬传递给他人", "获得奖励"]
@@ -121,6 +119,33 @@ export default function Tasks() {
 
     const cloudParams = { account: account }
     const cloudFunction = async () => {
+        const result = await Moralis.Cloud.run("cloudTask1", cloudParams)
+
+        if (result == "success") {
+            dispatch({
+                type: "success",
+                message: "验证成功！",
+                title: "New Notification",
+                icon: "bell",
+                position: "bottomR",
+            })
+        } else if (Task1activeStep <= 2) {
+            dispatch({
+                type: "error",
+                message: "验证失败！",
+                title: "New Notification",
+                icon: "bell",
+                position: "bottomR",
+            })
+        }
+        if (Task1activeStep >= 3) {
+            console.log("signature:" + result.signature)
+            await badgesMint(result.signature)
+        }
+    }
+    const clouddebugFunction = async (id) => {
+        const clouddebugParams = { account: account, stepid: id }
+        console.log(clouddebugParams)
         dispatch({
             type: "info",
             message: "数据验证中，请稍后",
@@ -128,11 +153,26 @@ export default function Tasks() {
             icon: "bell",
             position: "bottomR",
         })
-        const result = await Moralis.Cloud.run("cloudTask1", cloudParams)
-        if (Task1activeStep >= 3) {
-            console.log("signature:" + result.signature)
-            await badgesMint(result.signature)
+        const result = await Moralis.Cloud.run("skipStep", clouddebugParams)
+        if (result == "success") {
+            dispatch({
+                type: "success",
+                message: "验证成功！",
+                title: "New Notification",
+                icon: "bell",
+                position: "bottomR",
+            })
+        } else {
+            dispatch({
+                type: "error",
+                message: "验证失败！",
+                title: "New Notification",
+                icon: "bell",
+                position: "bottomR",
+            })
         }
+        console.log({ result })
+        await accountQuery()
     }
 
     const handleNext = async () => {
@@ -278,7 +318,7 @@ export default function Tasks() {
             <>
                 <p className="text-base mt-5 ">
                     <b> Step4：</b>
-                    恭喜完成任务，可以mint属于你的勋章了。（注：勋章是你经历的见证，不可交易）
+                    恭喜完成任务，可以mint属于你的勋章了。（注：勋章是你技能的见证，不可交易）
                 </p>
             </>
         )
@@ -298,7 +338,7 @@ export default function Tasks() {
                     </a>
                     上购买一个测试NFT
                 </p>
-                <p className=" mt-5">
+                <p className=" mt-4">
                     <b> 完成条件：</b> 在rinkeby链上拥有一个地址为
                     <a
                         className=" font-bold   text-blue-800"
@@ -310,6 +350,14 @@ export default function Tasks() {
                     </a>
                     的NFT <b>（{task1testNFT}/1）</b>
                 </p>
+                <a
+                    onClick={() => {
+                        clouddebugFunction(3)
+                    }}
+                    className="text-gray-500 mt-1 underline  cursor-pointer"
+                >
+                    DEBUG:点击直接完成
+                </a>
             </>
         )
     } else if (Task1activeStep >= 1) {
@@ -351,6 +399,14 @@ export default function Tasks() {
                     <b> 完成条件：</b>Rinkeby链上的余额 &gt;= 0.05 ETH。
                     <b>({balance}/0.05)</b>
                 </p>
+                <a
+                    onClick={() => {
+                        clouddebugFunction(2)
+                    }}
+                    className="text-gray-500 mt-1 underline cursor-pointer"
+                >
+                    DEBUG:点击直接完成
+                </a>
             </>
         )
     } else {

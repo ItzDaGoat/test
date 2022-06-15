@@ -3,7 +3,7 @@ import { Link } from "react-scroll"
 
 export const Welcome = () => {
     return (
-        <div className=" relative  h-screen  pt-16">
+        <div className=" relative h-5/6 pt-16">
             <main className=" relative  h-[40rem]  mx-auto max-w-7xl   px-4  overflow-hidden  ">
                 <video autoPlay loop muted className="absolute top-5   h-[35rem] w-[100rem]">
                     <source src="/webto3.mp4" type="video/mp4" />
