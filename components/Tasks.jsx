@@ -411,23 +411,33 @@ export default function Tasks() {
         )
     } else {
         task1des = (
-            <p className="text-base mt-5 ">
-                <b> Step1：</b>
-                一切先从安装metamask开始。它是一个在虚拟世界的钱包，相当于你在web3的身份证，是web3一切行为的必须品。也正因为其LOGO是只可爱的小狐狸，也被大家称为“小狐狸钱包”。{" "}
+            <>
+                <p className="text-base mt-5 ">
+                    <b> Step1：</b>
+                    一切先从安装metamask开始。它是一个在虚拟世界的钱包，相当于你在web3的身份证，是web3一切行为的必须品。也正因为其LOGO是只可爱的小狐狸，也被大家称为“小狐狸钱包”。{" "}
+                    <a
+                        className="  font-bold   text-blue-800"
+                        href="https://www.bilibili.com/read/cv15454623/"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        View Guide
+                        <GrShare
+                            style={{ color: "white" }}
+                            className="ml-2 inline-block mx-2 h-4 w-4 "
+                            aria-hidden="true"
+                        />
+                    </a>
+                </p>
                 <a
-                    className="  font-bold   text-blue-800"
-                    href="https://www.bilibili.com/read/cv15454623/"
-                    target="_blank"
-                    rel="noreferrer"
+                    onClick={() => {
+                        clouddebugFunction(1)
+                    }}
+                    className="text-gray-500 mt-1 underline cursor-pointer"
                 >
-                    View Guide
-                    <GrShare
-                        style={{ color: "white" }}
-                        className="ml-2 inline-block mx-2 h-4 w-4 "
-                        aria-hidden="true"
-                    />
+                    DEBUG:点击直接完成
                 </a>
-            </p>
+            </>
         )
     }
 
