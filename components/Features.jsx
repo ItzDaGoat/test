@@ -4,8 +4,14 @@ import { FaMedal, FaRegGem } from "react-icons/fa"
 import { RiMoneyDollarCircleLine } from "react-icons/ri"
 import { TransactionContext } from "./MainProvider"
 import fireABI from "../abis/fire.json"
+import { GrShare } from "react-icons/gr"
+
+import { Modal } from "web3uikit"
 
 import React, { useEffect, useState, useContext } from "react"
+
+import firetransfer1 from "../public/firetransfer1.png"
+import firetransfer2 from "../public/firetransfer2.png"
 
 import nfts from "../public/nfts.png"
 import torch from "../public/torch.png"
@@ -107,6 +113,7 @@ export const Features = () => {
     const language = 1
     const [BTNLoading, setBTNLoading] = useState(false)
     const [badgesNUM, setBadgesNUM] = useState(0)
+    const [Modalvisible, setModalvisible] = useState(false)
     const {
         FireAddress,
         Moralis,
@@ -123,18 +130,10 @@ export const Features = () => {
         dispatch,
     } = useContext(TransactionContext)
 
-    // const {
-    //     Moralis,
-    //     isInitialized,
-    //     authenticate,
-    //     isAuthenticated,
-    //     isAuthenticating,
-    //     user,
-    //     account,
-    //     chainId,
-    //     logout,
-    //     isWeb3Enabled,
-    // } = useMoralis()
+    useEffect(() => {
+        Modalvisible && (document.body.style.overflow = "hidden")
+        !Modalvisible && (document.body.style.overflow = "unset")
+    }, [Modalvisible])
 
     useEffect(() => {
         // authenticate()
@@ -214,8 +213,56 @@ export const Features = () => {
         }
     }
 
+    const fireLink = () => {
+        setModalvisible(true)
+    }
+
     return (
         <div className="relative  pt-8 mx-auto  max-w-7xl">
+            {Modalvisible && (
+                <div>
+                    <Modal
+                        hasFooter={false}
+                        width="50%"
+                        cancelText="Cancel"
+                        isVisible={Modalvisible}
+                        okButtonColor="yellow"
+                        okText="Transfer"
+                        onCancel={() => setModalvisible(false)}
+                        onCloseButtonPressed={() => setModalvisible(false)}
+                        onOk={function noRefCheck() {}}
+                        isCentered={true}
+                        title={<h2 className="font-bold text-4xl text-black "> 传递火炬</h2>}
+                    >
+                        <div className=" text-lg  text-black ">
+                            1、在
+                            <a
+                                className=" font-bold  underline  text-blue-800"
+                                target="_blank"
+                                rel="noreferrer"
+                                href="https://testnets.opensea.io/account"
+                            >
+                                OpesnSea{" "}
+                            </a>
+                            上选择你的火炬。
+                        </div>
+                        <div className="  text-lg text-black ">2、点击transfer按钮。</div>
+                        <figure className="mx-auto w-[30rem]">
+                            <Image className=" " src={firetransfer1} alt="" />
+                        </figure>
+                        <div className="  text-lg text-black ">
+                            3、输入目标钱包地址，点击Transfer，完成传火。
+                        </div>
+                        {/*    <figure className="w-[30rem]  ">
+                            <Image className=" " src={firetransfer2} alt="" />
+                        </figure> */}
+                        <div className=" text-lg mb-10  text-black ">
+                            4、当传递成功后，你将得到一个NFT专属头像
+                        </div>
+                    </Modal>
+                </div>
+            )}
+
             {/* 任务系统 */}
             <div className="py-20  ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -436,17 +483,17 @@ export const Features = () => {
                             <Image className="  scale-[100%]" src={torch} alt="" />
                         </div>
 
-                        <div className=" mt-2 flex px-6 justify-around">
-                            {badgesNUM >= 1 ? (
-                                <button
-                                    disabled={BTNLoading}
-                                    onClick={torchMint}
-                                    className="btn text-lg "
-                                >
-                                    Mint
-                                </button>
-                            ) : (
-                                <button className="h-10  px-3 text-base btn-disabled flex items-center font-medium rounded-md text-white bg-gray-500   ">
+                        <div className=" mt-2 flex px-12 justify-around">
+                            {/* {badgesNUM >= 1 ? ( */}
+                            <button
+                                disabled={BTNLoading}
+                                onClick={torchMint}
+                                className="btn text-lg "
+                            >
+                                Mint
+                            </button>
+                            {/* ) : (
+                                <button className="h-15  px-3 text-lg btn-disabled flex items-center font-medium rounded-md text-white bg-gray-500   ">
                                     1
                                     <FaMedal
                                         style={{ color: "white" }}
@@ -455,7 +502,14 @@ export const Features = () => {
                                     />
                                     解锁
                                 </button>
-                            )}
+                            )} */}
+                            <button
+                                disabled={BTNLoading}
+                                onClick={fireLink}
+                                className="btn text-lg "
+                            >
+                                传火
+                            </button>
                         </div>
                     </div>
                 </div>
