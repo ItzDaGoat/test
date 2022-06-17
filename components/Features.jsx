@@ -4,9 +4,9 @@ import { FaMedal, FaRegGem } from "react-icons/fa"
 import { RiMoneyDollarCircleLine } from "react-icons/ri"
 import { TransactionContext } from "./MainProvider"
 import fireABI from "../abis/fire.json"
-import { GrShare } from "react-icons/gr"
+import { useWeb3Transfer, useChain } from "react-moralis"
 
-import { Modal } from "web3uikit"
+import { Modal, Input } from "web3uikit"
 
 import React, { useEffect, useState, useContext } from "react"
 
@@ -16,7 +16,7 @@ import firetransfer2 from "../public/firetransfer2.png"
 import nfts from "../public/nfts.png"
 import torch from "../public/torch.png"
 import DAO from "../public/DAO.png"
-import NFT from "../public/nft.png"
+import NFTlogo from "../public/nft.png"
 import DEFI from "../public/defi.png"
 import EXPLORE from "../public/explore.png"
 import Link from "next/link"
@@ -113,7 +113,12 @@ export const Features = () => {
     const language = 1
     const [BTNLoading, setBTNLoading] = useState(false)
     const [badgesNUM, setBadgesNUM] = useState(0)
+    const [fireId, setFireId] = useState(0)
+    const [torchNFT, setTorchNFT] = useState([])
     const [Modalvisible, setModalvisible] = useState(false)
+    const [linkTarget, setLinkTarget] = useState("")
+    const { switchNetwork, chainId, chain } = useChain()
+
     const {
         FireAddress,
         Moralis,
@@ -128,6 +133,7 @@ export const Features = () => {
         Web3,
         web3Js,
         dispatch,
+        isWeb3Enabled,
     } = useContext(TransactionContext)
 
     useEffect(() => {
@@ -144,7 +150,8 @@ export const Features = () => {
         // if (account) {
         //     authenticate()
         // }
-        if (isInitialized) {
+        if (isInitialized && isWeb3Enabled) {
+            switchNetwork("0x4")
             fetchBadges()
         }
     }, [
@@ -213,17 +220,93 @@ export const Features = () => {
         }
     }
 
-    const fireLink = () => {
+    /* POP MODAL start */
+    const fireLink = async () => {
         setModalvisible(true)
+        const NFTs = await fetchNFTsForContract()
+        setTorchNFT(NFTs.result)
+        console.log(NFTs)
     }
+
+    const fetchNFTsForContract = async () => {
+        const options = {
+            chain: "rinkeby",
+            address: account,
+            token_address: FireAddress,
+        }
+        const NFTs = await Web3Api.account.getNFTsForContract(options)
+        return NFTs
+    }
+
+    const setSelectFire = (e) => {
+        setFireId(e.target.value)
+    }
+    console.log(fireId)
+
+    const setFirelinkTarget = (e) => {
+        setLinkTarget(e.target.value)
+    }
+    console.log(linkTarget)
+    const { fetch, error, isFetching } = useWeb3Transfer({
+        type: "erc1155",
+        receiver: linkTarget,
+        contractAddress: FireAddress,
+        tokenId: fireId,
+        amount: 1,
+    })
+
+    /* POP MODAL end */
 
     return (
         <div className="relative  pt-8 mx-auto  max-w-7xl">
             {Modalvisible && (
+                // (
+                //     <div>
+                //         <Modal
+                //             hasFooter={false}
+                //             width="50%"
+                //             cancelText="Cancel"
+                //             isVisible={Modalvisible}
+                //             okButtonColor="yellow"
+                //             okText="Transfer"
+                //             onCancel={() => setModalvisible(false)}
+                //             onCloseButtonPressed={() => setModalvisible(false)}
+                //             onOk={function noRefCheck() {}}
+                //             isCentered={true}
+                //             title={<h2 className="font-bold text-4xl text-black "> 传递火炬</h2>}
+                //         >
+                //             <div className=" text-lg  text-black ">
+                //                 1、在
+                //                 <a
+                //                     className=" font-bold  underline  text-blue-800"
+                //                     target="_blank"
+                //                     rel="noreferrer"
+                //                     href="https://testnets.opensea.io/account"
+                //                 >
+                //                     OpesnSea{" "}
+                //                 </a>
+                //                 上选择你的火炬。
+                //             </div>
+                //             <div className="  text-lg text-black ">2、点击transfer按钮。</div>
+                //             <figure className="mx-auto w-[30rem]">
+                //                 <Image className=" " src={firetransfer1} alt="" />
+                //             </figure>
+                //             <div className="  text-lg text-black ">
+                //                 3、输入目标钱包地址，点击Transfer，完成传火。
+                //             </div>
+                //             {/*    <figure className="w-[30rem]  ">
+                //                 <Image className=" " src={firetransfer2} alt="" />
+                //             </figure> */}
+                //             <div className=" text-lg mb-10  text-black ">
+                //                 4、当传递成功后，你将得到一个NFT专属头像
+                //             </div>
+                //         </Modal>
+                //     </div>
+                // )
                 <div>
                     <Modal
                         hasFooter={false}
-                        width="50%"
+                        width="80%"
                         cancelText="Cancel"
                         isVisible={Modalvisible}
                         okButtonColor="yellow"
@@ -232,33 +315,56 @@ export const Features = () => {
                         onCloseButtonPressed={() => setModalvisible(false)}
                         onOk={function noRefCheck() {}}
                         isCentered={true}
-                        title={<h2 className="font-bold text-4xl text-black "> 传递火炬</h2>}
+                        title={
+                            <h2 className="font-bold text-4xl text-black "> 传递火炬，人点亮人</h2>
+                        }
                     >
-                        <div className=" text-lg  text-black ">
-                            1、在
-                            <a
-                                className=" font-bold  underline  text-blue-800"
-                                target="_blank"
-                                rel="noreferrer"
-                                href="https://testnets.opensea.io/account"
-                            >
-                                OpesnSea{" "}
-                            </a>
-                            上选择你的火炬。
+                        <div className="flex justify-start">
+                            {torchNFT.length ? (
+                                torchNFT.map((item, index) => (
+                                    <div key={index}>
+                                        <div className="card mx-2  w-48 my-2 bg-base-100 shadow-xl">
+                                            <Image className="  " src={torch} alt="" />
+
+                                            <div className="card-body py-5 items-center text-center">
+                                                <h2 className="card-title text-black">
+                                                    Fire #{item.token_id}
+                                                </h2>
+                                                <p>see on opensea</p>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="radio"
+                                            name="radio-1"
+                                            value={item.token_id}
+                                            className="  block mx-auto radio"
+                                            onClick={setSelectFire}
+                                        />
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-black">没有火炬，请先mint</p>
+                            )}
                         </div>
-                        <div className="  text-lg text-black ">2、点击transfer按钮。</div>
-                        <figure className="mx-auto w-[30rem]">
-                            <Image className=" " src={firetransfer1} alt="" />
-                        </figure>
-                        <div className="  text-lg text-black ">
-                            3、输入目标钱包地址，点击Transfer，完成传火。
+
+                        <div
+                            style={{
+                                padding: "20px 0 20px 0",
+                            }}
+                        >
+                            <Input
+                                label="朋友的钱包地址"
+                                width="100%"
+                                onChange={setFirelinkTarget}
+                            />
                         </div>
-                        {/*    <figure className="w-[30rem]  ">
-                            <Image className=" " src={firetransfer2} alt="" />
-                        </figure> */}
-                        <div className=" text-lg mb-10  text-black ">
-                            4、当传递成功后，你将得到一个NFT专属头像
-                        </div>
+                        <button
+                            onClick={() => fetch()}
+                            disabled={isFetching || !torchNFT.length}
+                            className="mb-4 block mx-auto btn text-lg "
+                        >
+                            Transfer
+                        </button>
                     </Modal>
                 </div>
             )}
@@ -282,7 +388,7 @@ export const Features = () => {
                         <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
                             <div className="card card-side h-52 bg-gray-700 shadow-xl">
                                 <figure className=" w-[16rem]">
-                                    <Image className=" " src={NFT} alt="" />
+                                    <Image className=" " src={NFTlogo} alt="" />
                                 </figure>
                                 <div className=" relative card-body pt-6 w-3/4">
                                     <div className=" absolute top-7 right-9 text-white text-lg flex items-center">

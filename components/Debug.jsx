@@ -186,7 +186,15 @@ function Debug() {
             position: "bottomL",
         })
     }
-
+    const fetchNFTsForContract = async () => {
+        const options = {
+            chain: "rinkeby",
+            address: account,
+            token_address: FireAddress,
+        }
+        const polygonNFTs = await Web3Api.account.getNFTsForContract(options)
+        console.log(polygonNFTs)
+    }
     /** delete end */
 
     return (
@@ -240,6 +248,9 @@ function Debug() {
                     </button>{" "}
                     <button className="btn my-1 mx-2" onClick={getNotification}>
                         Notify
+                    </button>{" "}
+                    <button className="btn my-1 mx-2" onClick={fetchNFTsForContract}>
+                        fetchNFTsForContract
                     </button>
                 </div>
             )}

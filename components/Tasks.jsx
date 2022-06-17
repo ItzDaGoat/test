@@ -5,6 +5,7 @@ import { useState, useEffect, useContext } from "react"
 import { TransactionContext } from "./MainProvider"
 import Link from "next/link"
 import badgesABI from "../abis/badges.json"
+import { useChain } from "react-moralis"
 
 const task1Steps = ["安装metamask", "获取testETH", "用testETH购买NFT", "获得奖励"]
 const task2Steps = ["获得火炬", "将火炬传递给他人", "获得奖励"]
@@ -49,6 +50,7 @@ export default function Tasks() {
     const [BTNLoading, setBTNLoading] = useState(false)
     const [task1testNFT, setTask1testNFT] = useState(0)
     const [balance, setBalance] = useState(0)
+    const { switchNetwork, chainId, chain } = useChain()
 
     useEffect(() => {
         // if (isAuthenticated) {
@@ -60,10 +62,11 @@ export default function Tasks() {
         console.log({ account })
         console.log("page fresh")
 
-        if (isInitialized) {
+        if (isInitialized && isWeb3Enabled) {
             const update = async () => {
+                await switchNetwork("0x4")
                 await accountQuery()
-                if (account && isWeb3Enabled) {
+                if (account) {
                     await fetchTask1NFT()
                     await fetchNativeBalance()
                 }
