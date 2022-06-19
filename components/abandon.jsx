@@ -52,4 +52,55 @@
             </div>
         </div>
     </div>
+
+    {/* 勋章系统 */}
+    <div className="relative  pt-10 my-20 max-w-7xl mx-auto ">
+        <div className="relative    ">
+            <div className="relative flex  flex-row-reverse  justify-between  ">
+                <div className="mt-5 mr-10 w-5/12">
+                    <h3
+                        id="earn"
+                        className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl"
+                    >
+                        合作完成
+                    </h3>
+
+                    <p className="mt-3 text-lg bg-clip-text text-white   ">
+                        {text["earnTogether_" + language]}
+                    </p>
+
+                    <dl className="mt-10 space-y-10">
+                        {gemRoyalty.map((item) => (
+                            <div key={item.id} className=" my-10 relative">
+                                <dt>
+                                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md border-[2px] border-[#364153] bg-[#212936] text-white">
+                                        <item.icon
+                                            style={{ color: "white" }}
+                                            className="h-7 w-7 "
+                                            aria-hidden="true"
+                                        />
+                                    </div>
+                                    <p className="ml-16 text-xl leading-6  font-extrabold italic text-white ">
+                                        {item["name_" + language]}
+                                    </p>
+                                </dt>
+                                <dd className="mt-2 ml-16 text-base text-white ">
+                                    {item["description_" + language]}
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                </div>
+
+                <div className=" mt-2  overflow-hidden  rounded-3xl   relative  ">
+                    {/* <video className="w-[28rem]" autoPlay loop muted>
+                     <source src="/earn.mp4" type="video/mp4" />
+                 </video> */}
+                    <figure className=" w-[38rem] ml-4">
+                        <Image className="  " src={Badges} alt="" />
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

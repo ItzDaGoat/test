@@ -10,9 +10,6 @@ import { Modal, Input } from "web3uikit"
 
 import React, { useEffect, useState, useContext } from "react"
 
-import firetransfer1 from "../public/firetransfer1.png"
-import firetransfer2 from "../public/firetransfer2.png"
-
 import nfts from "../public/nfts.png"
 import torch from "../public/torch.png"
 import DAO from "../public/DAO.png"
@@ -20,7 +17,7 @@ import NFTlogo from "../public/nft.png"
 import DEFI from "../public/defi.png"
 import EXPLORE from "../public/explore.png"
 import Link from "next/link"
-import Badges from "../public/reputation.png"
+import Badges from "../public/task.jpg"
 
 const text = {
     id: 1,
@@ -34,8 +31,7 @@ const text = {
         "那些不斷實現自我迭代與成長並且不給自己設限的人。在這個時代，最大的財富來自於你的智慧",
     description2_0:
         "adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in, accusamus quisquam.Lorem ipsum dolor sit amet consectetur adipisicing elit",
-    description2_1:
-        "这里提供一种更加直接的入场方式，通过任务引导学习路线，通过查询链上数据进行任务验证并颁发奖章。每一个奖章，都将跟随你的钱包永久记录在区块链上。",
+    description2_1: "",
     description2_2:
         "設計、藝術、程序、市場，所有任務的目的只有一個，就是為NFT賦能一共有四種類型：設計、藝術、程序、市場，所有任務的目的只有一個，就是為NFT賦能一共有四種類型：設計、藝術、程序、市場，所有任務的目的只有一個，就是為NFT賦能",
     creatTogether_0:
@@ -84,28 +80,28 @@ const takeReputation = [
 const gemRoyalty = [
     {
         id: 1,
-        name_0: "GEM",
-        name_1: "灵魂绑定，不可交易",
-        name_2: "寶石",
-        description_0: "可交易的NFT会变成钱，而不可交易的NFT会带来合作",
-        description_1:
-            "这个世界的财富有两种，第一种是钱，第二种是人类的生产力。可交易的NFT能变成第一种，而不可交易的NFT则能促成第二种",
-        description_2:
-            "这个世界上比钱更贵重的财富是人类的生产力。可交易的NFT能变成第一种，而不可交易的NFT则能促成第二种",
-
-        icon: FaRegGem,
-    },
-    {
-        id: 2,
         name_0: "ROYALTY",
-        name_1: "永久公开，永久可查",
+        name_1: "勋章系统，灵魂绑定",
         name_2: "版稅",
 
         description_0:
             "A protection of the intellectual  property rights of each sovereign individual. After lighting up the gems, each transaction of NFT will bring you benefits, the more gems you light up, the higher the royalty rate you will get",
-        description_1: "让web3，信任不再稀缺",
+        description_1:
+            "一套不可交易的链上勋章系统，记录着每个社区成员的技能与经历，让信任不再稀缺。",
         description_2: "點亮寶石後，NFT的每次交易都將為你帶來收益，點亮的寶石越多，獲得的版稅越",
         icon: RiMoneyDollarCircleLine,
+    },
+    {
+        id: 2,
+        name_0: "GEM",
+        name_1: "获得专属NFT头像",
+        name_2: "寶石",
+        description_0: "可交易的NFT会变成钱，而不可交易的NFT会带来合作",
+        description_1: "传火活动中将送出3000个特别的NFT头像，传递火炬，人点亮人。",
+        description_2:
+            "这个世界的财富有两种，第一种是钱，第二种是人类的生产力。可交易的NFT能变成第一种，而不可交易的NFT则能促成第二种",
+
+        icon: FaRegGem,
     },
 ]
 
@@ -259,50 +255,8 @@ export const Features = () => {
 
     return (
         <div className="relative  pt-8 mx-auto  max-w-7xl">
+            {/* modal */}
             {Modalvisible && (
-                // (
-                //     <div>
-                //         <Modal
-                //             hasFooter={false}
-                //             width="50%"
-                //             cancelText="Cancel"
-                //             isVisible={Modalvisible}
-                //             okButtonColor="yellow"
-                //             okText="Transfer"
-                //             onCancel={() => setModalvisible(false)}
-                //             onCloseButtonPressed={() => setModalvisible(false)}
-                //             onOk={function noRefCheck() {}}
-                //             isCentered={true}
-                //             title={<h2 className="font-bold text-4xl text-black "> 传递火炬</h2>}
-                //         >
-                //             <div className=" text-lg  text-black ">
-                //                 1、在
-                //                 <a
-                //                     className=" font-bold  underline  text-blue-800"
-                //                     target="_blank"
-                //                     rel="noreferrer"
-                //                     href="https://testnets.opensea.io/account"
-                //                 >
-                //                     OpesnSea{" "}
-                //                 </a>
-                //                 上选择你的火炬。
-                //             </div>
-                //             <div className="  text-lg text-black ">2、点击transfer按钮。</div>
-                //             <figure className="mx-auto w-[30rem]">
-                //                 <Image className=" " src={firetransfer1} alt="" />
-                //             </figure>
-                //             <div className="  text-lg text-black ">
-                //                 3、输入目标钱包地址，点击Transfer，完成传火。
-                //             </div>
-                //             {/*    <figure className="w-[30rem]  ">
-                //                 <Image className=" " src={firetransfer2} alt="" />
-                //             </figure> */}
-                //             <div className=" text-lg mb-10  text-black ">
-                //                 4、当传递成功后，你将得到一个NFT专属头像
-                //             </div>
-                //         </Modal>
-                //     </div>
-                // )
                 <div>
                     <Modal
                         hasFooter={false}
@@ -370,7 +324,7 @@ export const Features = () => {
             )}
 
             {/* 任务系统 */}
-            <div className="py-20  ">
+            <div className="py-32  ">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="lg:text-center">
                         <p
@@ -380,7 +334,7 @@ export const Features = () => {
                             了解web3，从使用开始
                         </p>
                         <p className="mt-4 max-w-2xl text-lg text-gray-300 lg:mx-auto">
-                            这里提供一种更加直接的入场方式，通过任务引导学习路线，通过验证链上数据颁发勋章。每一个任务都是一段通往web3的奇妙旅程
+                            这里提供一种更加直接的入场方式，通过任务引导学习路线，通过验证链上数据颁发勋章，每一个任务都是一段通往web3的奇妙旅程。
                         </p>
                     </div>
 
@@ -403,7 +357,7 @@ export const Features = () => {
                                     <h2 className="  text-3xl text-white">NFTs</h2>
 
                                     <p className="text-white">
-                                        迈入Web3的第一步，先从免费获得一个NFT开始。
+                                        Non-fungible tokens, 一种无法复制的数字资产
                                     </p>
                                     <Link href="/task">
                                         <div className="card-actions justify-end">
@@ -431,7 +385,8 @@ export const Features = () => {
                                     <h2 className="  text-3xl text-white">DeFi</h2>
 
                                     <p className="text-white">
-                                        区块链的本质是将钱记录在链上，而DEFI就是区块链里关于钱的那一部分
+                                        Decentralized finance,
+                                        使用加密货币和区块链技术来管理金融交易
                                     </p>
                                     <div className="card-actions justify-end">
                                         <button className="btn btn-primary w-24 px-0  btn-disabled bg-gray-500 text-white text-base  ">
@@ -462,7 +417,10 @@ export const Features = () => {
 
                                     <h2 className="  text-3xl text-white">DAO</h2>
 
-                                    <p className="text-white">投出你web3的第一票</p>
+                                    <p className="text-white">
+                                        Decentralized autonomous
+                                        organization，由其成员集体拥有和管理的组织，投出你web3的第一票
+                                    </p>
                                     <div className="card-actions justify-end">
                                         <button className="btn btn-primary w-24 px-0  btn-disabled bg-gray-500 text-white text-base  ">
                                             6
@@ -494,8 +452,8 @@ export const Features = () => {
                                     <h2 className="  text-3xl text-white">EXPOLRER</h2>
 
                                     <p className="text-white">
-                                        GAMEFI, SOCIALFI,
-                                        各式各样有趣的项目都在这里，原来web3已经在这么玩
+                                        GameFi, SocialFi,
+                                        Infrastructure...探索更多web3前沿技术与应用
                                     </p>
                                     <div className="card-actions justify-end">
                                         <button className="btn btn-primary w-24 px-0 btn-disabled bg-gray-500 text-white text-base  ">
@@ -514,59 +472,47 @@ export const Features = () => {
                     </div>
                 </div>
             </div>
-            {/* 勋章系统 */}
-            <div className="relative  pt-10 my-20 max-w-7xl mx-auto ">
-                <div className="relative    ">
-                    <div className="relative flex  flex-row-reverse  justify-between  ">
-                        <div className="mt-5 mr-10 w-5/12">
-                            <h3
-                                id="earn"
-                                className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl"
-                            >
-                                区块链记录成就
-                            </h3>
 
-                            <p className="mt-3 text-lg bg-clip-text text-white   ">
-                                {text["earnTogether_" + language]}
-                            </p>
+            {/* 社区 */}
+            <div className="pb-4  mt-28 relative   flex justify-between    ">
+                {/* <Image className=" -translate-x-[30%]  scale-[60%]" src={nfts} alt="" /> */}
+                <figure className=" w-[50rem]">
+                    <Image className=" " src={nfts} alt="" />
+                </figure>
+                <div className="  ml-8 w-5/12   text-left">
+                    <h2 className="text-3xl font-extrabold    leading-8   tracking-tight text-white sm:text-4xl">
+                        进入Web3，从社区出发
+                    </h2>
 
-                            <dl className="mt-10 space-y-10">
-                                {gemRoyalty.map((item) => (
-                                    <div key={item.id} className=" my-10 relative">
-                                        <dt>
-                                            <div className="absolute flex items-center justify-center h-12 w-12 rounded-md border-[2px] border-[#364153] bg-[#212936] text-white">
-                                                <item.icon
-                                                    style={{ color: "white" }}
-                                                    className="h-7 w-7 "
-                                                    aria-hidden="true"
-                                                />
-                                            </div>
-                                            <p className="ml-16 text-xl leading-6  font-extrabold italic text-white ">
-                                                {item["name_" + language]}
-                                            </p>
-                                        </dt>
-                                        <dd className="mt-2 ml-16 text-base text-white ">
-                                            {item["description_" + language]}
-                                        </dd>
+                    <p className="mt-4 max-w-3xl mx-auto  text-lg text-gray-300 ">
+                        WEBTO3也是一个共创者的社区，让合作从这里开始。
+                    </p>
+                    <dl className="mt-10 space-y-10">
+                        {gemRoyalty.map((item) => (
+                            <div key={item.id} className=" my-10 relative">
+                                <dt>
+                                    <div className="absolute flex items-center justify-center h-12 w-12 rounded-md border-[2px] border-[#364153] bg-[#212936] text-white">
+                                        <item.icon
+                                            style={{ color: "white" }}
+                                            className="h-7 w-7 "
+                                            aria-hidden="true"
+                                        />
                                     </div>
-                                ))}
-                            </dl>
-                        </div>
-
-                        <div className=" mt-2  overflow-hidden  rounded-3xl   relative  ">
-                            {/* <video className="w-[28rem]" autoPlay loop muted>
-                                <source src="/earn.mp4" type="video/mp4" />
-                            </video> */}
-                            <figure className=" w-[38rem] ml-4">
-                                <Image className="  " src={Badges} alt="" />
-                            </figure>
-                        </div>
-                    </div>
+                                    <p className="ml-16 text-xl leading-6  font-extrabold   text-white ">
+                                        {item["name_" + language]}
+                                    </p>
+                                </dt>
+                                <dd className="mt-1 ml-16 text-lg text-gray-300">
+                                    {item["description_" + language]}
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
                 </div>
             </div>
-            {/* MINT */}
 
-            <div className=" relative  mt-52 mb-24 py-5   max-w-7xl h-52 mx-auto  shadow-xl bg-yellow-400">
+            {/* MINT */}
+            <div className=" relative   mt-14 mb-24 py-5   max-w-7xl h-52 mx-auto  shadow-xl bg-yellow-400">
                 <div className=" flex justify-around items-center">
                     <div className="w-[35%] font-bold italic text-4xl  text-center">
                         传递火炬，人点亮人
@@ -575,14 +521,14 @@ export const Features = () => {
                     <div id="communicate" className="w-[44%]  leading-10 text-lg  text-left ">
                         <p>
                             # 每个钱包第一次将<b className=" text-2xl">火炬</b>
-                            传递给他人，自己会收到一个
-                            <b className=" text-2xl">专属头像</b>
+                            传递给他人时，自己会收到一个
+                            <b className=" text-2xl">NFT头像</b>
                         </p>
                         <p>
                             # 收到火炬的人可以再将火炬<b className=" text-2xl">传递</b>
-                            给他人，同样也会收到专属头像
+                            给他人，同样也会收到NFT头像
                         </p>
-                        <p># 直到头像总数达到10000个，活动永久结束</p>
+                        <p># 直到头像总数达到3000个，活动结束</p>
                     </div>
                     <div className="w-[20%] text-3xl ">
                         <div className="h-28 w-28 mx-auto">
@@ -620,25 +566,67 @@ export const Features = () => {
                     </div>
                 </div>
             </div>
-            {/* 社区 */}
 
-            <div id="communicate" className="relative   flex justify-between    h-[34rem]">
-                {/* <Image className=" -translate-x-[30%]  scale-[60%]" src={nfts} alt="" /> */}
-                <figure className=" w-[50rem]">
-                    <Image className=" " src={nfts} alt="" />
-                </figure>
-                <div className="  ml-8 w-5/12   text-left">
-                    <h2 className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl">
-                        找到一起做事的伙伴
-                    </h2>
-                    <p className="mt-10 max-w-3xl mx-auto  text-xl text-white">
-                        进入web3，从动手开始
-                    </p>
-                    <p className="mt-10 max-w-3xl mx-auto  text-xl text-white">
-                        这里聚集了一群想在web3动手做点什么的人，每个人都拥有自己擅长的技能和领域，并对自己负责。web3全新的组织形式让我们彼此链接在一起。
-                        加入社区，你的伙伴就在这里
-                    </p>
-                    <p className="mt-10 max-w-3xl mx-auto  text-xl text-white"></p>
+            <div className="relative  pt-28 my-20 max-w-7xl mx-auto ">
+                <div className="relative    ">
+                    <div className="relative flex  flex-row-reverse  justify-between  ">
+                        <div className="mt-5 mr-10 w-5/12">
+                            <h3
+                                id="earn"
+                                className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl"
+                            >
+                                组建临时团队，共创共赢
+                            </h3>
+
+                            {/* <p className="mt-3 text-lg bg-clip-text text-gray-300  ">
+                                根据自己的兴趣和技能，参与喜欢的项目并获得回报。
+                            </p> */}
+
+                            <dl className="mt-10 space-y-10">
+                                <div className=" my-10 relative">
+                                    <dt>
+                                        <div className="absolute flex items-center justify-center h-12 w-12 rounded-md border-[2px] border-[#364153] bg-[#212936] text-white">
+                                            <FaRegGem
+                                                style={{ color: "white" }}
+                                                className="h-7 w-7 "
+                                                aria-hidden="true"
+                                            />
+                                        </div>
+                                        <p className="ml-16 text-xl leading-6  font-extrabold   text-white ">
+                                            成为发起人
+                                        </p>
+                                    </dt>
+                                    <dd className="mt-2 ml-16 text-lg text-gray-300 ">
+                                        想做一款游戏、一套NFT、一个工具或者一段动画？讲述你的故事，拆分需要的工作，成为发起人，在这里找到共创者一起将它实现。
+                                    </dd>
+                                    <dt className="mt-10">
+                                        <div className=" absolute flex items-center justify-center h-12 w-12 rounded-md border-[2px] border-[#364153] bg-[#212936] text-white">
+                                            <FaRegGem
+                                                style={{ color: "white" }}
+                                                className="h-7 w-7 "
+                                                aria-hidden="true"
+                                            />
+                                        </div>
+                                        <p className="ml-16 text-xl leading-6  font-extrabold   text-white ">
+                                            成为共创者
+                                        </p>
+                                    </dt>
+                                    <dd className="mt-2 ml-16 text-lg text-gray-300 ">
+                                        擅长程序、美术、策划、推广或者其他？利用你的所长加入你感兴趣的项目，成为共创者，最终与项目共赢。
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        <div className=" mt-2  overflow-hidden  rounded-3xl   relative  ">
+                            {/* <video className="w-[28rem]" autoPlay loop muted>
+                     <source src="/earn.mp4" type="video/mp4" />
+                 </video> */}
+                            <figure className=" w-[38rem] ml-8">
+                                <Image className="  " src={Badges} alt="" />
+                            </figure>
+                        </div>
+                    </div>
                 </div>
             </div>
 
