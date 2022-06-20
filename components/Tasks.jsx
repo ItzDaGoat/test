@@ -64,12 +64,12 @@ export default function Tasks() {
 
         if (isInitialized && isWeb3Enabled) {
             const update = async () => {
-                await switchNetwork("0x4")
-                await accountQuery()
                 if (account) {
+                    await switchNetwork("0x4")
                     await fetchTask1NFT()
                     await fetchNativeBalance()
                 }
+                await accountQuery()
             }
             update()
         }
@@ -192,6 +192,9 @@ export default function Tasks() {
             setBTNLoading(false)
             return
         }
+        if (chainId != "0x4") {
+            switchNetwork("0x4")
+        }
 
         await cloudFunction()
         await accountQuery()
@@ -224,6 +227,11 @@ export default function Tasks() {
     /* NFTmint start*/
     const badgesMint = async (_signature) => {
         setBTNLoading(true)
+
+        if (chainId != "0x4") {
+            switchNetwork("0x4")
+        }
+
         await Moralis.enableWeb3()
         const web3Js = new Web3(Moralis.provider)
 
