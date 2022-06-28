@@ -169,59 +169,101 @@ export const Features = () => {
     const torchMint = async () => {
         setBTNLoading(true)
 
-        const Contract = new web3Js.eth.Contract(fireABI, FireAddress)
-        const cloudParams = { account: account }
-        const _signature = await Moralis.Cloud.run("getTorchSignature", cloudParams)
-        dispatch({
-            type: "info",
-            message: "验证勋章，获取签名中",
-            title: "New Notification",
-            icon: "bell",
-            position: "bottomR",
-        })
-        console.log(_signature)
-        try {
-            const txHash = await Contract.methods
-                .mint(0, _signature)
-                .send({ from: account })
-                .on("transactionHash", function (hash) {
-                    console.log(hash)
-                    dispatch({
-                        type: "info",
-                        message: hash,
-                        title: "交易提交，请稍后",
-                        position: "bottomR",
-                    })
-                })
-                .on("receipt", function (receipt) {
-                    console.log("SUCCESS!!!")
-                    dispatch({
-                        type: "success",
-                        message: "MINT成功！",
-                        title: "New Notification",
-                        position: "bottomR",
-                    })
-                    setBTNLoading(false)
-                })
-        } catch (error) {
-            setBTNLoading(false)
-            console.log("error!!!!!")
+        if (!isWeb3Enabled) {
             dispatch({
                 type: "error",
-                message: "",
-                title: "MINT失败",
+                message: "请先登陆",
+                title: "New Notification",
+                icon: "bell",
                 position: "bottomR",
             })
-            console.error(error)
+            setBTNLoading(false)
+            return
         }
+        // if (!isAuthenticated) {
+        //     await authenticate()
+        // }
+        if (chainId != "0x4") {
+            dispatch({
+                type: "info",
+                message: "请切换至rinkeby网络",
+                title: "New Notification",
+                icon: "bell",
+                position: "bottomR",
+            })
+            setBTNLoading(false)
+            return
+        }
+
+        if (chainId == "0x4") {
+            const Contract = new web3Js.eth.Contract(fireABI, FireAddress)
+            const cloudParams = { account: account }
+            const _signature = await Moralis.Cloud.run("getTorchSignature", cloudParams)
+            dispatch({
+                type: "info",
+                message: "验证勋章，获取签名中",
+                title: "New Notification",
+                icon: "bell",
+                position: "bottomR",
+            })
+            console.log(_signature)
+            try {
+                const txHash = await Contract.methods
+                    .mint(0, _signature)
+                    .send({ from: account })
+                    .on("transactionHash", function (hash) {
+                        console.log(hash)
+                        dispatch({
+                            type: "info",
+                            message: hash,
+                            title: "交易提交，请稍后",
+                            position: "bottomR",
+                        })
+                    })
+                    .on("receipt", function (receipt) {
+                        console.log("SUCCESS!!!")
+                        dispatch({
+                            type: "success",
+                            message: "MINT成功！",
+                            title: "New Notification",
+                            position: "bottomR",
+                        })
+                        setBTNLoading(false)
+                    })
+            } catch (error) {
+                setBTNLoading(false)
+                console.log("error!!!!!")
+                dispatch({
+                    type: "error",
+                    message: "",
+                    title: "MINT失败",
+                    position: "bottomR",
+                })
+                console.error(error)
+            }
+        }
+        setBTNLoading(false)
     }
 
     /* POP MODAL start */
     const fireLink = async () => {
-        setModalvisible(true)
-        const NFTs = await fetchNFTsForContract()
-        setTorchNFT(NFTs.result)
-        console.log(NFTs)
+        
+        if (account) {
+            setModalvisible(true)
+            const NFTs = await fetchNFTsForContract()
+            setTorchNFT(NFTs.result)
+            console.log(NFTs)
+        }else{
+            dispatch({
+                type: "error",
+                message: "请先登陆",
+                title: "New Notification",
+                icon: "bell",
+                position: "bottomR",
+            })
+        }
+       
+      
     }
 
     const fetchNFTsForContract = async () => {
@@ -303,7 +345,7 @@ export const Features = () => {
 
                         <div
                             style={{
-                                padding: "20px 0 20px 0",
+                                padding: "20px 0 0px 0",
                             }}
                         >
                             <Input
@@ -319,6 +361,7 @@ export const Features = () => {
                         >
                             Transfer
                         </button>
+
                     </Modal>
                 </div>
             )}
@@ -329,7 +372,7 @@ export const Features = () => {
                     <div className="lg:text-center">
                         <p
                             id="task"
-                            className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl"
+                            className="mt-2 text-4xl leading-8 font-extrabold tracking-tight text-white  "
                         >
                             了解web3，从使用开始
                         </p>
@@ -480,7 +523,7 @@ export const Features = () => {
                     <Image className=" " src={nfts} alt="" />
                 </figure>
                 <div className="  ml-8 w-5/12   text-left">
-                    <h2 className="text-3xl font-extrabold    leading-8   tracking-tight text-white sm:text-4xl">
+                    <h2 className="text-4xl font-extrabold    leading-8   tracking-tight text-white  ">
                         进入Web3，从社区出发
                     </h2>
 
@@ -529,6 +572,7 @@ export const Features = () => {
                             给他人，同样也会收到NFT头像
                         </p>
                         <p># 直到头像总数达到3000个，活动结束</p>
+                        <a className=" underline  text-base " href="https://testnets.opensea.io/collection/firelink-v2" rel="noreferrer" target="_blank">查看头像</a>
                     </div>
                     <div className="w-[20%] text-3xl ">
                         <div className="h-28 w-28 mx-auto">
@@ -544,17 +588,7 @@ export const Features = () => {
                             >
                                 Mint
                             </button>
-                            {/* ) : (
-                                <button className="h-15  px-3 text-lg btn-disabled flex items-center font-medium rounded-md text-white bg-gray-500   ">
-                                    1
-                                    <FaMedal
-                                        style={{ color: "white" }}
-                                        className="h-4 w-4 "
-                                        aria-hidden="true"
-                                    />
-                                    解锁
-                                </button>
-                            )} */}
+
                             <button
                                 disabled={BTNLoading}
                                 onClick={fireLink}
@@ -573,7 +607,7 @@ export const Features = () => {
                         <div className="mt-5 mr-10 w-5/12">
                             <h3
                                 id="earn"
-                                className="text-3xl italic leading-8 font-semibold tracking-tight text-white sm:text-4xl"
+                                className="text-4xl  leading-8  font-extrabold tracking-tight text-white sm:text-4xl"
                             >
                                 组建临时团队，共创共赢
                             </h3>

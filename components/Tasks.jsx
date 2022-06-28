@@ -179,6 +179,18 @@ export default function Tasks() {
     }
 
     const handleNext = async () => {
+
+        if(!account){
+            dispatch({
+                type: "error",
+                message: "请先登陆",
+                title: "New Notification",
+                icon: "bell",
+                position: "bottomR",
+            })
+            return 
+        }
+
         setBTNLoading(true)
 
         if (typeof window !== "undefined") {
@@ -356,7 +368,7 @@ export default function Tasks() {
                         className=" font-bold   text-blue-800"
                         target="_blank"
                         rel="noreferrer"
-                        href="https://blog.csdn.net/weixin_43886457/article/details/122591191"
+                        href="https://testnets.opensea.io/assets/rinkeby/0xa2dbbc63101cd5ac2a4c4ed26caa997b2918f9e9/0"
                     >
                         0xa2dBBc63101CD5Ac2A4c4ed26cAA997B2918f9E9
                     </a>
@@ -463,9 +475,7 @@ export default function Tasks() {
                     <h3 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
                         在测试网获得你的第一个NFT
                     </h3>
-                    {/* <p className=" mt-3 text-gray-500">
-                        测试链是web3中必不可少的工具，它不但拥有主链几乎所有的功能，而且token免费就能获取，最适合初学者体验web3。
-                    </p> */}
+                  
                     {task1des}
 
                     <ul className=" absolute bottom-3 left-5   w-11/12 steps">
@@ -495,50 +505,7 @@ export default function Tasks() {
                     <div className=" mt-2 flex px-6 justify-around">{stepButton}</div>
                 </div>
             </div>
-            {/* <div className="mx-auto mt-9 bg-white h-72 flex rounded-lg shadow-lg overflow-hidden max-w-7xl ">
-                <div className=" relative  flex-1     px-6 py-8 p-12">
-                    <h3 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
-                        传递火炬，转移NFT
-                    </h3>
-                    <p className=" mt-6 text-base text-gray-500">
-                        发发发发发顺丰
-                        <button className="text-lg flex px-0 btn btn-link">
-                            View Guide
-                            <GrShare
-                                style={{ color: "white" }}
-                                className=" mx-2 h-4 w-4 "
-                                aria-hidden="true"
-                            />
-                        </button>
-                    </p>
-
-                    <ul className=" absolute bottom-3 left-5     w-11/12 steps">
-                        {task2Steps.map((label, index) => {
-                            const stepProps = {}
-                            const labelProps = {}
-                            if (Task1activeStep >= index) {
-                                return (
-                                    <li key={index} className="step step-primary">
-                                        {label}
-                                    </li>
-                                )
-                            }
-                            return (
-                                <li key={index} className="step  ">
-                                    {label}
-                                </li>
-                            )
-                        })}
-                    </ul>
-                </div>
-                <div className=" w-80 bg-amber-800 py-16">
-                    <div className="h-36 w-36 mx-auto">
-                        <Image src={torch} alt="" />
-                    </div>
-
-                    <div className=" mt-2 flex px-6 justify-around">{stepButton}</div>
-                </div>
-            </div> */}
+          
         </div>
     )
 }
